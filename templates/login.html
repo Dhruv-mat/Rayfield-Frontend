@@ -76,49 +76,10 @@
                     </form>
 
                     <!-- CSV Upload Link -->
-                    <button
-                        id="csvUploadBtn"
-                        class="absolute top-[447px] left-[227px] font-inter font-normal text-[#7d7d7d] text-xl hover:text-white transition-colors cursor-pointer"
-                    >
-                        Upload CSV Without Login
-                    </button>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- CSV Upload Modal -->
-    <div id="csvModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-[#1f1f1f] rounded-[35px] p-8 w-[500px] max-w-[90vw]">
-            <h3 class="font-outfit font-medium text-white text-2xl mb-6">Upload CSV File</h3>
-            <form id="csvUploadForm" enctype="multipart/form-data">
-                <input
-                    type="file"
-                    id="csvFile"
-                    name="file"
-                    accept=".csv"
-                    required
-                    class="w-full p-4 bg-[#484848] rounded-lg text-white mb-4"
-                />
-                <div class="flex gap-4">
-                    <button
-                        type="submit"
-                        class="flex-1 bg-[#629a44] text-white py-3 rounded-lg hover:bg-[#5a8a3d] transition-colors"
-                    >
-                        Upload
-                    </button>
-                    <button
-                        type="button"
-                        id="closeCsvModal"
-                        class="flex-1 bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors"
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
 
     <!-- Message Display -->
     <div id="message" class="fixed top-4 right-4 p-4 rounded-lg text-white hidden z-50"></div>
@@ -169,58 +130,8 @@
             }
         });
 
-        // CSV Upload Modal
-        const csvModal = document.getElementById('csvModal');
-        const csvUploadBtn = document.getElementById('csvUploadBtn');
-        const closeCsvModal = document.getElementById('closeCsvModal');
-
-        csvUploadBtn.addEventListener('click', () => {
-            csvModal.classList.remove('hidden');
-            csvModal.classList.add('flex');
-        });
-
-        closeCsvModal.addEventListener('click', () => {
-            csvModal.classList.add('hidden');
-            csvModal.classList.remove('flex');
-        });
-
-        // CSV Upload form handler
-        document.getElementById('csvUploadForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const formData = new FormData();
-            const fileInput = document.getElementById('csvFile');
-            formData.append('file', fileInput.files[0]);
-            
-            try {
-                const response = await fetch('/upload-csv', {
-                    method: 'POST',
-                    body: formData,
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage(data.message, 'success');
-                    csvModal.classList.add('hidden');
-                    csvModal.classList.remove('flex');
-                    fileInput.value = '';
-                } else {
-                    showMessage(data.message, 'error');
-                }
-            } catch (error) {
-                showMessage('An error occurred. Please try again.', 'error');
-            }
-        });
 
 
-        // Close modals when clicking outside
-        csvModal.addEventListener('click', (e) => {
-            if (e.target === csvModal) {
-                csvModal.classList.add('hidden');
-                csvModal.classList.remove('flex');
-            }
-        });
     </script>
 </body>
 </html>

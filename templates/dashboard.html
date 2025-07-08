@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rayfield Systems - Dashboard</title>
+    <title>Rayfield Systems - Data Upload</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css?family=Outfit:500,400,700|Inter:400" rel="stylesheet">
     <style>
@@ -40,203 +40,139 @@
                 <!-- Green glow effect -->
                 <div class="absolute w-[593px] h-[593px] top-[200px] right-[100px] bg-[#629a44] rounded-full blur-effect opacity-40"></div>
 
-                <!-- Main Dashboard Card -->
+                <!-- Main Upload Card -->
                 <div class="relative bg-[#1f1f1f] rounded-[35px] shadow-[0px_4px_16.1px_#00000040] opacity-[0.9] p-8 mx-8">
                     <!-- Dashboard Title -->
                     <h2 class="font-outfit font-medium text-white text-[32px] mb-8 text-center">
-                        System Parameters
+                        Data Upload & Configuration
                     </h2>
 
-                    <!-- Parameters Form -->
-                    <form id="parametersForm" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                        <!-- Parameter 1 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Network Timeout (ms)</label>
-                            <input
-                                type="number"
-                                name="network_timeout"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="5000"
-                            />
-                        </div>
-
-                        <!-- Parameter 2 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Max Connections</label>
-                            <input
-                                type="number"
-                                name="max_connections"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="100"
-                            />
-                        </div>
-
-                        <!-- Parameter 3 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Buffer Size (KB)</label>
-                            <input
-                                type="number"
-                                name="buffer_size"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="1024"
-                            />
-                        </div>
-
-                        <!-- Parameter 4 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Retry Attempts</label>
-                            <input
-                                type="number"
-                                name="retry_attempts"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="3"
-                            />
-                        </div>
-
-                        <!-- Parameter 5 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Log Level</label>
-                            <select
-                                name="log_level"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none"
-                            >
-                                <option value="">Select Level</option>
-                                <option value="DEBUG">DEBUG</option>
-                                <option value="INFO">INFO</option>
-                                <option value="WARNING">WARNING</option>
-                                <option value="ERROR">ERROR</option>
-                            </select>
-                        </div>
-
-                        <!-- Parameter 6 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Cache Duration (min)</label>
-                            <input
-                                type="number"
-                                name="cache_duration"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="60"
-                            />
-                        </div>
-
-                        <!-- Parameter 7 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">API Endpoint</label>
-                            <input
-                                type="url"
-                                name="api_endpoint"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="https://api.example.com"
-                            />
-                        </div>
-
-                        <!-- Parameter 8 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Security Mode</label>
-                            <select
-                                name="security_mode"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none"
-                            >
-                                <option value="">Select Mode</option>
-                                <option value="STRICT">STRICT</option>
-                                <option value="NORMAL">NORMAL</option>
-                                <option value="RELAXED">RELAXED</option>
-                            </select>
-                        </div>
-
-                        <!-- Parameter 9 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Thread Pool Size</label>
-                            <input
-                                type="number"
-                                name="thread_pool_size"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="10"
-                            />
-                        </div>
-
-                        <!-- Parameter 10 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Compression Level</label>
-                            <input
-                                type="range"
-                                name="compression_level"
-                                min="0"
-                                max="9"
-                                value="6"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg"
-                            />
-                            <span id="compressionValue" class="text-gray-300 text-sm">6</span>
-                        </div>
-
-                        <!-- Parameter 11 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Enable Monitoring</label>
-                            <div class="flex items-center h-[50px]">
+                    <!-- Upload Form -->
+                    <form id="uploadForm" enctype="multipart/form-data" class="max-w-4xl mx-auto">
+                        <!-- File Upload Section -->
+                        <div class="bg-[#2a2a2a] rounded-lg p-6 mb-8">
+                            <h3 class="font-outfit font-medium text-white text-xl mb-4">Upload CSV File</h3>
+                            <div class="border-2 border-dashed border-gray-500 rounded-lg p-8 text-center">
                                 <input
-                                    type="checkbox"
-                                    name="enable_monitoring"
-                                    value="true"
-                                    class="w-5 h-5 bg-[#484848] rounded border-none"
+                                    type="file"
+                                    id="csvFile"
+                                    name="file"
+                                    accept=".csv"
+                                    required
+                                    class="hidden"
                                 />
-                                <span class="ml-3 text-gray-300">Enable system monitoring</span>
+                                <label for="csvFile" class="cursor-pointer">
+                                    <div class="flex flex-col items-center">
+                                        <svg class="w-12 h-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                        </svg>
+                                        <span class="text-white text-lg mb-2">Click to upload CSV file</span>
+                                        <span class="text-gray-400 text-sm">or drag and drop</span>
+                                    </div>
+                                </label>
+                                <div id="fileName" class="mt-4 text-green-400 hidden"></div>
                             </div>
                         </div>
 
-                        <!-- Parameter 12 -->
-                        <div class="space-y-2">
-                            <label class="font-inter text-white text-sm font-medium">Database Host</label>
-                            <input
-                                type="text"
-                                name="database_host"
-                                class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
-                                placeholder="localhost"
-                            />
+                        <!-- Parameters Section -->
+                        <div class="bg-[#2a2a2a] rounded-lg p-6 mb-8">
+                            <h3 class="font-outfit font-medium text-white text-xl mb-6">Data Parameters</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <!-- Location Parameter -->
+                                <div class="space-y-2">
+                                    <label class="font-inter text-white text-sm font-medium">Location</label>
+                                    <input
+                                        type="text"
+                                        name="location"
+                                        required
+                                        class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none placeholder-gray-300"
+                                        placeholder="e.g., New York, California"
+                                    />
+                                </div>
+
+                                <!-- Unit Parameter -->
+                                <div class="space-y-2">
+                                    <label class="font-inter text-white text-sm font-medium">Unit</label>
+                                    <select
+                                        name="unit"
+                                        required
+                                        class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none"
+                                    >
+                                        <option value="">Select Unit</option>
+                                        <option value="MW">Megawatts (MW)</option>
+                                        <option value="GW">Gigawatts (GW)</option>
+                                        <option value="kW">Kilowatts (kW)</option>
+                                        <option value="MWh">Megawatt-hours (MWh)</option>
+                                        <option value="GWh">Gigawatt-hours (GWh)</option>
+                                        <option value="kWh">Kilowatt-hours (kWh)</option>
+                                    </select>
+                                </div>
+
+                                <!-- Source Type Parameter -->
+                                <div class="space-y-2">
+                                    <label class="font-inter text-white text-sm font-medium">Energy Source</label>
+                                    <select
+                                        name="source_type"
+                                        required
+                                        class="w-full h-[50px] bg-[#484848] rounded-lg shadow-[0px_4px_4px_#00000040] text-white px-4 border-none outline-none"
+                                    >
+                                        <option value="">Select Source</option>
+                                        <option value="solar">Solar</option>
+                                        <option value="wind">Wind</option>
+                                        <option value="coal">Coal</option>
+                                        <option value="natural_gas">Natural Gas</option>
+                                        <option value="nuclear">Nuclear</option>
+                                        <option value="hydro">Hydroelectric</option>
+                                        <option value="biomass">Biomass</option>
+                                        <option value="geothermal">Geothermal</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="flex justify-center gap-6">
+                            <button
+                                type="submit"
+                                class="bg-[#629a44] hover:bg-[#5a8a3d] text-white px-8 py-3 rounded-lg font-inter font-medium transition-colors"
+                            >
+                                Upload Data
+                            </button>
+                            <button
+                                type="button"
+                                id="resetForm"
+                                class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-inter font-medium transition-colors"
+                            >
+                                Reset
+                            </button>
                         </div>
                     </form>
 
-                    <!-- Action Buttons -->
-                    <div class="flex justify-center gap-6 mt-8">
-                        <button
-                            type="button"
-                            id="saveParameters"
-                            class="bg-[#629a44] hover:bg-[#5a8a3d] text-white px-8 py-3 rounded-lg font-inter font-medium transition-colors"
-                        >
-                            Save Parameters
-                        </button>
-                        <button
-                            type="button"
-                            id="resetParameters"
-                            class="bg-gray-600 hover:bg-gray-700 text-white px-8 py-3 rounded-lg font-inter font-medium transition-colors"
-                        >
-                            Reset
-                        </button>
-                    </div>
-
-                    <!-- Status Indicators -->
+                    <!-- Status Section -->
                     <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="bg-[#2a2a2a] rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <div class="w-3 h-3 bg-green-500 rounded-full"></div>
                                 <span class="text-white font-inter font-medium">System Status</span>
                             </div>
-                            <span class="text-gray-300 text-sm">All systems operational</span>
+                            <span class="text-gray-300 text-sm">Ready for upload</span>
                         </div>
                         
                         <div class="bg-[#2a2a2a] rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                <span class="text-white font-inter font-medium">Parameters</span>
+                                <span class="text-white font-inter font-medium">Files Uploaded</span>
                             </div>
-                            <span class="text-gray-300 text-sm">Ready for configuration</span>
+                            <span id="uploadCount" class="text-gray-300 text-sm">0</span>
                         </div>
                         
                         <div class="bg-[#2a2a2a] rounded-lg p-4">
                             <div class="flex items-center gap-2 mb-2">
                                 <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                <span class="text-white font-inter font-medium">Last Saved</span>
+                                <span class="text-white font-inter font-medium">Last Upload</span>
                             </div>
-                            <span id="lastSaved" class="text-gray-300 text-sm">Never</span>
+                            <span id="lastUpload" class="text-gray-300 text-sm">Never</span>
                         </div>
                     </div>
                 </div>
@@ -248,6 +184,8 @@
     <div id="message" class="fixed top-4 right-4 p-4 rounded-lg text-white hidden z-50"></div>
 
     <script>
+        let uploadCount = 0;
+
         // Show message function
         function showMessage(text, type = 'info') {
             const messageEl = document.getElementById('message');
@@ -262,60 +200,82 @@
             }, 3000);
         }
 
-        // Update compression level display
-        const compressionSlider = document.querySelector('input[name="compression_level"]');
-        const compressionValue = document.getElementById('compressionValue');
-        
-        compressionSlider.addEventListener('input', (e) => {
-            compressionValue.textContent = e.target.value;
+        // File input handler
+        document.getElementById('csvFile').addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name;
+            const fileNameEl = document.getElementById('fileName');
+            
+            if (fileName) {
+                fileNameEl.textContent = `Selected: ${fileName}`;
+                fileNameEl.classList.remove('hidden');
+            } else {
+                fileNameEl.classList.add('hidden');
+            }
         });
 
-        // Save parameters
-        document.getElementById('saveParameters').addEventListener('click', async () => {
-            const form = document.getElementById('parametersForm');
-            const formData = new FormData(form);
-            const parameters = {};
+        // Upload form handler
+        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
             
-            // Convert FormData to object
-            for (let [key, value] of formData.entries()) {
-                if (value) { // Only include non-empty values
-                    parameters[key] = value;
-                }
-            }
-            
-            // Handle checkbox separately
-            const monitoringCheckbox = form.querySelector('input[name="enable_monitoring"]');
-            if (monitoringCheckbox.checked) {
-                parameters['enable_monitoring'] = 'true';
-            }
+            const formData = new FormData(e.target);
             
             try {
-                const response = await fetch('/save-parameters', {
+                const response = await fetch('/upload-data', {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(parameters),
+                    body: formData,
                 });
                 
                 const data = await response.json();
                 
                 if (data.success) {
-                    showMessage('Parameters saved successfully!', 'success');
-                    document.getElementById('lastSaved').textContent = new Date().toLocaleString();
+                    showMessage('Data uploaded successfully with parameters!', 'success');
+                    uploadCount++;
+                    document.getElementById('uploadCount').textContent = uploadCount;
+                    document.getElementById('lastUpload').textContent = new Date().toLocaleString();
+                    
+                    // Reset form
+                    e.target.reset();
+                    document.getElementById('fileName').classList.add('hidden');
                 } else {
                     showMessage(data.message, 'error');
                 }
             } catch (error) {
-                showMessage('An error occurred while saving parameters.', 'error');
+                showMessage('An error occurred while uploading data.', 'error');
             }
         });
 
-        // Reset parameters
-        document.getElementById('resetParameters').addEventListener('click', () => {
-            document.getElementById('parametersForm').reset();
-            compressionValue.textContent = '6';
-            showMessage('Parameters reset to default values.', 'info');
+        // Reset form
+        document.getElementById('resetForm').addEventListener('click', () => {
+            document.getElementById('uploadForm').reset();
+            document.getElementById('fileName').classList.add('hidden');
+            showMessage('Form reset successfully.', 'info');
+        });
+
+        // Drag and drop functionality
+        const dropZone = document.querySelector('.border-dashed');
+        
+        dropZone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropZone.classList.add('border-green-500', 'bg-green-500', 'bg-opacity-10');
+        });
+        
+        dropZone.addEventListener('dragleave', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-green-500', 'bg-green-500', 'bg-opacity-10');
+        });
+        
+        dropZone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropZone.classList.remove('border-green-500', 'bg-green-500', 'bg-opacity-10');
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0 && files[0].name.endsWith('.csv')) {
+                document.getElementById('csvFile').files = files;
+                document.getElementById('fileName').textContent = `Selected: ${files[0].name}`;
+                document.getElementById('fileName').classList.remove('hidden');
+            } else {
+                showMessage('Please drop a valid CSV file.', 'error');
+            }
         });
     </script>
 </body>
