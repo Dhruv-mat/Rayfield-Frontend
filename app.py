@@ -84,22 +84,22 @@ def upload_data():
     
     try:
         # Check if file is present
-    if 'file' not in request.files:
-        return jsonify({'success': False, 'message': 'No file selected'}), 400
-    
-    file = request.files['file']
-    location = request.form.get('location')
-    unit = request.form.get('unit')
-    source_type = request.form.get('source_type')
-    
-    if file.filename == '':
-        return jsonify({'success': False, 'message': 'No file selected'}), 400
-    
-    if not all([location, unit, source_type]):
-        return jsonify({'success': False, 'message': 'Please fill in all parameters'}), 400
-    
-    if file and file.filename.endswith('.csv'):
-                # Validate file size (optional - Flask already handles MAX_CONTENT_LENGTH)
+        if 'file' not in request.files:
+            return jsonify({'success': False, 'message': 'No file selected'}), 400
+        
+        file = request.files['file']
+        location = request.form.get('location')
+        unit = request.form.get('unit')
+        source_type = request.form.get('source_type')
+        
+        if file.filename == '':
+            return jsonify({'success': False, 'message': 'No file selected'}), 400
+        
+        if not all([location, unit, source_type]):
+            return jsonify({'success': False, 'message': 'Please fill in all parameters'}), 400
+        
+        if file and file.filename.endswith('.csv'):
+            # Validate file size (optional - Flask already handles MAX_CONTENT_LENGTH)
             file.seek(0, os.SEEK_END)
             file_size = file.tell()
             file.seek(0)  # Reset file pointer
@@ -108,19 +108,19 @@ def upload_data():
                 return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
             
             # Save uploaded file
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{timestamp}_{file.filename}"
-        file_path = os.path.join(UPLOADS_FOLDER, filename)
-        
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f"{timestamp}_{file.filename}"
+            file_path = os.path.join(UPLOADS_FOLDER, filename)
+            
             # Save file in chunks for large files
             try:
                 file.save(file_path)
             except Exception as e:
                 return jsonify({'success': False, 'message': f'Error saving file: {str(e)}'}), 500
-        
+            
             # Save parameters
-        save_upload_parameters(session['user_email'], filename, location, unit, source_type)
-        
+            save_upload_parameters(session['user_email'], filename, location, unit, source_type)
+            
             # Get file info for response
             file_size_mb = round(file_size / (1024 * 1024), 2)
             
@@ -129,7 +129,7 @@ def upload_data():
                 'message': f'Large CSV file ({file_size_mb}MB) uploaded successfully with parameters'
             })
         else:
-        return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
+            return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
     
     except Exception as e:
         # Handle any unexpected errors
