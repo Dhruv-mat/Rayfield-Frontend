@@ -83,7 +83,7 @@ def upload_data():
         return jsonify({'success': False, 'message': 'Not authenticated'}), 401
     
     try:
-    # Check if file is present
+        # Check if file is present
     if 'file' not in request.files:
         return jsonify({'success': False, 'message': 'No file selected'}), 400
     
@@ -99,7 +99,7 @@ def upload_data():
         return jsonify({'success': False, 'message': 'Please fill in all parameters'}), 400
     
     if file and file.filename.endswith('.csv'):
-            # Validate file size (optional - Flask already handles MAX_CONTENT_LENGTH)
+                # Validate file size (optional - Flask already handles MAX_CONTENT_LENGTH)
             file.seek(0, os.SEEK_END)
             file_size = file.tell()
             file.seek(0)  # Reset file pointer
@@ -107,7 +107,7 @@ def upload_data():
             if file_size > 400 * 1024 * 1024:  # 400MB limit
                 return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
             
-        # Save uploaded file
+            # Save uploaded file
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         filename = f"{timestamp}_{file.filename}"
         file_path = os.path.join(UPLOADS_FOLDER, filename)
@@ -118,7 +118,7 @@ def upload_data():
             except Exception as e:
                 return jsonify({'success': False, 'message': f'Error saving file: {str(e)}'}), 500
         
-        # Save parameters
+            # Save parameters
         save_upload_parameters(session['user_email'], filename, location, unit, source_type)
         
             # Get file info for response
@@ -128,7 +128,7 @@ def upload_data():
                 'success': True, 
                 'message': f'Large CSV file ({file_size_mb}MB) uploaded successfully with parameters'
             })
-    else:
+        else:
         return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
     
     except Exception as e:
