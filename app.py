@@ -103,6 +103,15 @@ def upload_data():
         # Save parameters
         save_upload_parameters(session['user_email'], filename, location, unit, source_type)
         
+        # Save uploaded file
+        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+        filename = f"{timestamp}_{file.filename}"
+        file_path = os.path.join(UPLOADS_FOLDER, filename)
+        file.save(file_path)
+        
+        # Save parameters
+        save_upload_parameters(session['user_email'], filename, location, unit, source_type)
+        
         return jsonify({'success': True, 'message': f'File uploaded successfully with parameters'})
     else:
         return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
