@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayfield Systems - Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css?family=Outfit:500,400,700|Inter:400" rel="stylesheet">
+    <style>
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .blur-effect { filter: blur(243.05px); }
+    </style>
+</head>
+<body class="bg-[#212121] min-h-screen">
+    <div class="bg-[#212121] flex flex-row justify-center w-full min-h-screen">
+        <div class="bg-[#212121] overflow-hidden w-full max-w-[1440px] h-[1024px] relative">
+            <!-- Logo and Title -->
+            <div class="absolute top-[97px] left-1/2 -translate-x-1/2 flex flex-col items-center gap-4">
+                <div class="w-[53px] h-[53px] bg-green-500 rounded-lg flex items-center justify-center">
+                    <svg width="30" height="30" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1 class="font-outfit font-bold text-[#fff8f8] text-[40px]">
+                    Rayfield Systems
+                </h1>
+            </div>
+
+            <!-- Login Card and Background Effect -->
+            <div class="absolute w-full max-w-[1238px] h-[878px] top-[294px] left-1/2 -translate-x-1/4">
+                <!-- Green glow effect -->
+                <div class="absolute w-[593px] h-[593px] top-[285px] left-[645px] bg-[#629a44] rounded-full blur-effect opacity-60"></div>
+
+                <!-- Login Card -->
+                <div class="absolute w-[705px] h-[508px] top-0 left-0 bg-[#1f1f1f] rounded-[35px] shadow-[0px_4px_16.1px_#00000040] opacity-[0.59]">
+                    <h2 class="absolute top-[26px] left-[91px] font-outfit font-medium text-white text-[40px]">
+                        Login
+                    </h2>
+
+                    <!-- Login Form -->
+                    <form id="loginForm" class="absolute top-[104px] left-[91px] w-[542px]">
+                        <!-- Email Input -->
+                        <div class="mb-[19px]">
+                            <input
+                                type="email"
+                                id="email"
+                                name="email"
+                                required
+                                class="w-[540px] h-[68px] bg-[#484848] rounded-2xl shadow-[0px_4px_4px_#00000040] opacity-[0.44] text-white text-2xl px-5 py-4 border-none outline-none placeholder-gray-300"
+                                placeholder="EMAIL"
+                            />
+                        </div>
+
+                        <!-- Password Input -->
+                        <div class="mb-[84px]">
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                required
+                                class="w-[540px] h-[68px] bg-[#484848] rounded-2xl shadow-[0px_4px_4px_#00000040] opacity-[0.44] text-white text-2xl px-5 py-4 border-none outline-none placeholder-gray-300"
+                                placeholder="PASSWORD"
+                            />
+                        </div>
+
+                        <!-- Login Button -->
+                        <button
+                            type="submit"
+                            class="w-[540px] h-[68px] bg-[#629a44] rounded-2xl shadow-[0px_4px_4px_#00000040] opacity-[0.44] hover:opacity-[0.6] text-white text-[32px] font-normal font-inter transition-opacity duration-200"
+                        >
+                            Login
+                        </button>
+                    </form>
+
+                    <!-- CSV Upload Link -->
+                    <button
+                        id="csvUploadBtn"
+                        class="absolute top-[447px] left-[227px] font-inter font-normal text-[#7d7d7d] text-xl hover:text-white transition-colors cursor-pointer"
+                    >
+                        Upload CSV Without Login
+                    </button>
+
+                    <!-- Register Link -->
+                    <button
+                        id="registerBtn"
+                        class="absolute top-[470px] left-[280px] font-inter font-normal text-[#7d7d7d] text-sm hover:text-white transition-colors cursor-pointer"
+                    >
+                        Don't have an account? Register
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CSV Upload Modal -->
+    <div id="csvModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-[#1f1f1f] rounded-[35px] p-8 w-[500px] max-w-[90vw]">
+            <h3 class="font-outfit font-medium text-white text-2xl mb-6">Upload CSV File</h3>
+            <form id="csvUploadForm" enctype="multipart/form-data">
+                <input
+                    type="file"
+                    id="csvFile"
+                    name="file"
+                    accept=".csv"
+                    required
+                    class="w-full p-4 bg-[#484848] rounded-lg text-white mb-4"
+                />
+                <div class="flex gap-4">
+                    <button
+                        type="submit"
+                        class="flex-1 bg-[#629a44] text-white py-3 rounded-lg hover:bg-[#5a8a3d] transition-colors"
+                    >
+                        Upload
+                    </button>
+                    <button
+                        type="button"
+                        id="closeCsvModal"
+                        class="flex-1 bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-[#1f1f1f] rounded-[35px] p-8 w-[500px] max-w-[90vw]">
+            <h3 class="font-outfit font-medium text-white text-2xl mb-6">Register New Account</h3>
+            <form id="registerForm">
+                <input
+                    type="email"
+                    id="regEmail"
+                    name="email"
+                    required
+                    class="w-full p-4 bg-[#484848] rounded-lg text-white mb-4 placeholder-gray-300"
+                    placeholder="Email"
+                />
+                <input
+                    type="password"
+                    id="regPassword"
+                    name="password"
+                    required
+                    class="w-full p-4 bg-[#484848] rounded-lg text-white mb-4 placeholder-gray-300"
+                    placeholder="Password"
+                />
+                <div class="flex gap-4">
+                    <button
+                        type="submit"
+                        class="flex-1 bg-[#629a44] text-white py-3 rounded-lg hover:bg-[#5a8a3d] transition-colors"
+                    >
+                        Register
+                    </button>
+                    <button
+                        type="button"
+                        id="closeRegisterModal"
+                        class="flex-1 bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors"
+                    >
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Message Display -->
+    <div id="message" class="fixed top-4 right-4 p-4 rounded-lg text-white hidden z-50"></div>
+
+    <script>
+        // Show message function
+        function showMessage(text, type = 'info') {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            messageEl.className = `fixed top-4 right-4 p-4 rounded-lg text-white z-50 ${
+                type === 'error' ? 'bg-red-600' : type === 'success' ? 'bg-green-600' : 'bg-blue-600'
+            }`;
+            messageEl.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageEl.classList.add('hidden');
+            }, 3000);
+        }
+
+        // Login form handler
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Login successful! Redirecting...', 'success');
+                    setTimeout(() => {
+                        window.location.href = '/dashboard';
+                    }, 1000);
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'error');
+            }
+        });
+
+        // CSV Upload Modal
+        const csvModal = document.getElementById('csvModal');
+        const csvUploadBtn = document.getElementById('csvUploadBtn');
+        const closeCsvModal = document.getElementById('closeCsvModal');
+
+        csvUploadBtn.addEventListener('click', () => {
+            csvModal.classList.remove('hidden');
+            csvModal.classList.add('flex');
+        });
+
+        closeCsvModal.addEventListener('click', () => {
+            csvModal.classList.add('hidden');
+            csvModal.classList.remove('flex');
+        });
+
+        // CSV Upload form handler
+        document.getElementById('csvUploadForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const formData = new FormData();
+            const fileInput = document.getElementById('csvFile');
+            formData.append('file', fileInput.files[0]);
+            
+            try {
+                const response = await fetch('/upload-csv', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    csvModal.classList.add('hidden');
+                    csvModal.classList.remove('flex');
+                    fileInput.value = '';
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'error');
+            }
+        });
+
+        // Register Modal
+        const registerModal = document.getElementById('registerModal');
+        const registerBtn = document.getElementById('registerBtn');
+        const closeRegisterModal = document.getElementById('closeRegisterModal');
+
+        registerBtn.addEventListener('click', () => {
+            registerModal.classList.remove('hidden');
+            registerModal.classList.add('flex');
+        });
+
+        closeRegisterModal.addEventListener('click', () => {
+            registerModal.classList.add('hidden');
+            registerModal.classList.remove('flex');
+        });
+
+        // Register form handler
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('regEmail').value;
+            const password = document.getElementById('regPassword').value;
+            
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ email, password }),
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(data.message, 'success');
+                    registerModal.classList.add('hidden');
+                    registerModal.classList.remove('flex');
+                    document.getElementById('registerForm').reset();
+                } else {
+                    showMessage(data.message, 'error');
+                }
+            } catch (error) {
+                showMessage('An error occurred. Please try again.', 'error');
+            }
+        });
+
+        // Close modals when clicking outside
+        [csvModal, registerModal].forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
