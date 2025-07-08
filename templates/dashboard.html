@@ -141,7 +141,7 @@
                                         </div>
                                         <span class="text-white text-xl font-medium mb-2">Drop your CSV file here</span>
                                         <span class="text-gray-400 text-base mb-4">or click to browse</span>
-                                        <span class="text-gray-500 text-sm">Supports: .csv files only</span>
+                                        <span class="text-gray-500 text-sm">Supports: .csv files up to 400MB</span>
                                     </div>
                                 </label>
                                 <div id="fileName" class="mt-6 p-3 bg-[#629a44] bg-opacity-20 rounded-lg text-[#629a44] font-medium hidden"></div>
@@ -317,18 +317,25 @@
         // Enhanced file input handler
         document.getElementById('csvFile').addEventListener('change', (e) => {
             const fileName = e.target.files[0]?.name;
+            const fileSize = e.target.files[0]?.size;
             const fileNameEl = document.getElementById('fileName');
             
             if (fileName) {
+                const fileSizeMB = (fileSize / (1024 * 1024)).toFixed(2);
                 fileNameEl.innerHTML = `
                     <div class="flex items-center gap-3">
                         <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span>Selected: ${fileName}</span>
+                        <span>Selected: ${fileName} (${fileSizeMB}MB)</span>
                     </div>
                 `;
                 fileNameEl.classList.remove('hidden');
+                
+                // Show warning for very large files
+                if (fileSize > 100 * 1024 * 1024) { // 100MB
+                    showMessage(`⚠️ Large file detected (${fileSizeMB}MB). Upload may take longer.`, 'info');
+                }
             } else {
                 fileNameEl.classList.add('hidden');
             }
@@ -338,17 +345,32 @@
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
+            const fileInput = document.getElementById('csvFile');
+            const file = fileInput.files[0];
+            
+            // Check file size before upload
+            if (file && file.size > 400 * 1024 * 1024) { // 400MB
+                showMessage('❌ File too large. Maximum size is 400MB.', 'error');
+                return;
+            }
+            
             const submitBtn = e.target.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             
             // Show loading state
+            const isLargeFile = file && file.size > 50 * 1024 * 1024; // 50MB
             submitBtn.innerHTML = `
                 <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
                 </svg>
-                Uploading...
+                ${isLargeFile ? 'Processing Large File...' : 'Uploading...'}
             `;
             submitBtn.disabled = true;
+            
+            // Show additional message for large files
+            if (isLargeFile) {
+                showMessage('📤 Processing large CSV file. This may take a few minutes...', 'info');
+            }
             
             const formData = new FormData(e.target);
             
@@ -361,7 +383,7 @@
                 const data = await response.json();
                 
                 if (data.success) {
-                    showMessage('✅ Data uploaded successfully with parameters!', 'success');
+                    showMessage(`✅ ${data.message}`, 'success');
                     uploadCount++;
                     document.getElementById('uploadCount').textContent = `${uploadCount} files`;
                     document.getElementById('lastUpload').textContent = new Date().toLocaleString();
@@ -375,13 +397,17 @@
                     showMessage(`❌ ${data.message}`, 'error');
                 }
             } catch (error) {
-                showMessage('❌ Network error occurred while uploading.', 'error');
+                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                    showMessage('❌ Upload timeout or network error. File may be too large.', 'error');
+                } else {
+                    showMessage('❌ Network error occurred while uploading.', 'error');
+                }
             } finally {
                 // Restore button
                 setTimeout(() => {
                     submitBtn.innerHTML = originalText;
                     submitBtn.disabled = false;
-                }, 1000);
+                }, isLargeFile ? 2000 : 1000);
             }
         });
 
@@ -427,19 +453,33 @@
             const files = dt.files;
             
             if (files.length > 0 && files[0].name.endsWith('.csv')) {
+                const file = files[0];
+                const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                
+                // Check file size
+                if (file.size > 400 * 1024 * 1024) { // 400MB
+                    showMessage('❌ File too large. Maximum size is 400MB.', 'error');
+                    return;
+                }
+                
                 document.getElementById('csvFile').files = files;
-                const fileName = files[0].name;
+                const fileName = file.name;
                 const fileNameEl = document.getElementById('fileName');
                 fileNameEl.innerHTML = `
                     <div class="flex items-center gap-3">
                         <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <span>Selected: ${fileName}</span>
+                        <span>Selected: ${fileName} (${fileSizeMB}MB)</span>
                     </div>
                 `;
                 fileNameEl.classList.remove('hidden');
-                showMessage('📁 CSV file ready for upload!', 'success');
+                
+                if (file.size > 100 * 1024 * 1024) { // 100MB
+                    showMessage(`📁 Large CSV file ready (${fileSizeMB}MB). Upload may take longer.`, 'info');
+                } else {
+                    showMessage('📁 CSV file ready for upload!', 'success');
+                }
             } else {
                 showMessage('❌ Please drop a valid CSV file only.', 'error');
             }

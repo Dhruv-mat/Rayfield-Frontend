@@ -7,6 +7,10 @@ from datetime import datetime
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this-in-production'
 
+# Configure Flask for large file uploads
+app.config['MAX_CONTENT_LENGTH'] = 500 * 1024 * 1024  # 500MB max file size
+app.config['UPLOAD_FOLDER'] = 'uploads'
+
 # CSV file to store user credentials
 CSV_FILE = 'users.csv'
 PARAMETERS_FILE = 'parameters.csv'
@@ -78,6 +82,7 @@ def upload_data():
     if 'user_email' not in session:
         return jsonify({'success': False, 'message': 'Not authenticated'}), 401
     
+    try:
     # Check if file is present
     if 'file' not in request.files:
         return jsonify({'success': False, 'message': 'No file selected'}), 400
@@ -94,27 +99,41 @@ def upload_data():
         return jsonify({'success': False, 'message': 'Please fill in all parameters'}), 400
     
     if file and file.filename.endswith('.csv'):
+            # Validate file size (optional - Flask already handles MAX_CONTENT_LENGTH)
+            file.seek(0, os.SEEK_END)
+            file_size = file.tell()
+            file.seek(0)  # Reset file pointer
+            
+            if file_size > 400 * 1024 * 1024:  # 400MB limit
+                return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
+            
         # Save uploaded file
         timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
         filename = f"{timestamp}_{file.filename}"
         file_path = os.path.join(UPLOADS_FOLDER, filename)
-        file.save(file_path)
+        
+            # Save file in chunks for large files
+            try:
+                file.save(file_path)
+            except Exception as e:
+                return jsonify({'success': False, 'message': f'Error saving file: {str(e)}'}), 500
         
         # Save parameters
         save_upload_parameters(session['user_email'], filename, location, unit, source_type)
         
-        # Save uploaded file
-        timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-        filename = f"{timestamp}_{file.filename}"
-        file_path = os.path.join(UPLOADS_FOLDER, filename)
-        file.save(file_path)
-        
-        # Save parameters
-        save_upload_parameters(session['user_email'], filename, location, unit, source_type)
-        
-        return jsonify({'success': True, 'message': f'File uploaded successfully with parameters'})
+            # Get file info for response
+            file_size_mb = round(file_size / (1024 * 1024), 2)
+            
+            return jsonify({
+                'success': True, 
+                'message': f'Large CSV file ({file_size_mb}MB) uploaded successfully with parameters'
+            })
     else:
         return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
+    
+    except Exception as e:
+        # Handle any unexpected errors
+        return jsonify({'success': False, 'message': f'Upload failed: {str(e)}'}), 500
 
 @app.route('/dashboard')
 def dashboard():
@@ -129,4 +148,4 @@ def logout():
 
 if __name__ == '__main__':
     init_csv()
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)
