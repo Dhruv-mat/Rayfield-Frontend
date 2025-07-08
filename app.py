@@ -9,6 +9,7 @@ app.secret_key = 'your-secret-key-change-this-in-production'
 
 # CSV file to store user credentials
 CSV_FILE = 'users.csv'
+PARAMETERS_FILE = 'parameters.csv'
 
 def hash_password(password):
     """Hash password using SHA-256"""
@@ -22,6 +23,12 @@ def init_csv():
             writer.writerow(['email', 'password_hash', 'created_at'])
             # Add a default admin user (email: admin@rayfield.com, password: admin123)
             writer.writerow(['admin@rayfield.com', hash_password('admin123'), datetime.now().isoformat()])
+    
+    # Initialize parameters CSV file
+    if not os.path.exists(PARAMETERS_FILE):
+        with open(PARAMETERS_FILE, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['user_email', 'timestamp', 'parameter_name', 'parameter_value'])
 
 def verify_user(email, password):
     """Verify user credentials against CSV file"""
@@ -37,13 +44,11 @@ def verify_user(email, password):
                 return True
     return False
 
-def add_user(email, password):
-    """Add new user to CSV file"""
-    password_hash = hash_password(password)
-    
-    with open(CSV_FILE, 'a', newline='') as file:
+def save_parameter(user_email, parameter_name, parameter_value):
+    """Save parameter to CSV file"""
+    with open(PARAMETERS_FILE, 'a', newline='') as file:
         writer = csv.writer(file)
-        writer.writerow([email, password_hash, datetime.now().isoformat()])
+        writer.writerow([user_email, datetime.now().isoformat(), parameter_name, parameter_value])
 
 @app.route('/')
 def index():
@@ -63,22 +68,20 @@ def login():
     else:
         return jsonify({'success': False, 'message': 'Invalid email or password'}), 401
 
-@app.route('/register', methods=['POST'])
-def register():
+@app.route('/save-parameters', methods=['POST'])
+def save_parameters():
+    if 'user_email' not in session:
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+    
     data = request.get_json()
-    email = data.get('email')
-    password = data.get('password')
+    user_email = session['user_email']
     
-    # Check if user already exists
-    if os.path.exists(CSV_FILE):
-        with open(CSV_FILE, 'r', newline='') as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                if row['email'] == email:
-                    return jsonify({'success': False, 'message': 'User already exists'}), 400
+    # Save each parameter
+    for param_name, param_value in data.items():
+        if param_value:  # Only save non-empty values
+            save_parameter(user_email, param_name, param_value)
     
-    add_user(email, password)
-    return jsonify({'success': True, 'message': 'User registered successfully'})
+    return jsonify({'success': True, 'message': 'Parameters saved successfully'})
 
 @app.route('/dashboard')
 def dashboard():

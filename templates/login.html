@@ -82,14 +82,6 @@
                     >
                         Upload CSV Without Login
                     </button>
-
-                    <!-- Register Link -->
-                    <button
-                        id="registerBtn"
-                        class="absolute top-[470px] left-[280px] font-inter font-normal text-[#7d7d7d] text-sm hover:text-white transition-colors cursor-pointer"
-                    >
-                        Don't have an account? Register
-                    </button>
                 </div>
             </div>
         </div>
@@ -127,45 +119,6 @@
         </div>
     </div>
 
-    <!-- Register Modal -->
-    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-[#1f1f1f] rounded-[35px] p-8 w-[500px] max-w-[90vw]">
-            <h3 class="font-outfit font-medium text-white text-2xl mb-6">Register New Account</h3>
-            <form id="registerForm">
-                <input
-                    type="email"
-                    id="regEmail"
-                    name="email"
-                    required
-                    class="w-full p-4 bg-[#484848] rounded-lg text-white mb-4 placeholder-gray-300"
-                    placeholder="Email"
-                />
-                <input
-                    type="password"
-                    id="regPassword"
-                    name="password"
-                    required
-                    class="w-full p-4 bg-[#484848] rounded-lg text-white mb-4 placeholder-gray-300"
-                    placeholder="Password"
-                />
-                <div class="flex gap-4">
-                    <button
-                        type="submit"
-                        class="flex-1 bg-[#629a44] text-white py-3 rounded-lg hover:bg-[#5a8a3d] transition-colors"
-                    >
-                        Register
-                    </button>
-                    <button
-                        type="button"
-                        id="closeRegisterModal"
-                        class="flex-1 bg-gray-600 text-white py-3 rounded-lg hover:bg-gray-700 transition-colors"
-                    >
-                        Cancel
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
 
     <!-- Message Display -->
     <div id="message" class="fixed top-4 right-4 p-4 rounded-lg text-white hidden z-50"></div>
@@ -260,60 +213,13 @@
             }
         });
 
-        // Register Modal
-        const registerModal = document.getElementById('registerModal');
-        const registerBtn = document.getElementById('registerBtn');
-        const closeRegisterModal = document.getElementById('closeRegisterModal');
-
-        registerBtn.addEventListener('click', () => {
-            registerModal.classList.remove('hidden');
-            registerModal.classList.add('flex');
-        });
-
-        closeRegisterModal.addEventListener('click', () => {
-            registerModal.classList.add('hidden');
-            registerModal.classList.remove('flex');
-        });
-
-        // Register form handler
-        document.getElementById('registerForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            
-            const email = document.getElementById('regEmail').value;
-            const password = document.getElementById('regPassword').value;
-            
-            try {
-                const response = await fetch('/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ email, password }),
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage(data.message, 'success');
-                    registerModal.classList.add('hidden');
-                    registerModal.classList.remove('flex');
-                    document.getElementById('registerForm').reset();
-                } else {
-                    showMessage(data.message, 'error');
-                }
-            } catch (error) {
-                showMessage('An error occurred. Please try again.', 'error');
-            }
-        });
 
         // Close modals when clicking outside
-        [csvModal, registerModal].forEach(modal => {
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.classList.add('hidden');
-                    modal.classList.remove('flex');
-                }
-            });
+        csvModal.addEventListener('click', (e) => {
+            if (e.target === csvModal) {
+                csvModal.classList.add('hidden');
+                csvModal.classList.remove('flex');
+            }
         });
     </script>
 </body>
