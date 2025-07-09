@@ -34,5 +34,9 @@ model = genai.GenerativeModel("gemini-1.5-flash")
 
 response = model.generate_content(prompt)
 
+with open("gemini_summary.txt", "w", encoding="utf-8") as f:
+    f.write(response.text)
+
+
 # Print the response
 print(response.text)
