@@ -1,0 +1,113 @@
+@@ .. @@
+                     <!-- Upload Summary Cards -->
+                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
++                        {% if upload_info %}
+                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                             <div class="flex items-center gap-3 mb-3">
+                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                 </svg>
+                                 <span class="text-white font-inter font-semibold text-sm">File Name</span>
+                             </div>
+-                            <span class="text-gray-300 text-sm">generation_data.csv</span>
++                            <span class="text-gray-300 text-sm">{{ upload_info.original_filename or 'No file uploaded' }}</span>
+                         </div>
+                         
+                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                             <div class="flex items-center gap-3 mb-3">
+                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                 </svg>
+                                 <span class="text-white font-inter font-semibold text-sm">Location</span>
+                             </div>
+-                            <span class="text-gray-300 text-sm">Niagara Falls</span>
++                            <span class="text-gray-300 text-sm">{{ upload_info.location or 'Not specified' }}</span>
+                         </div>
+                         
+                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                             <div class="flex items-center gap-3 mb-3">
+                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                 </svg>
+                                 <span class="text-white font-inter font-semibold text-sm">Unit</span>
+                             </div>
+-                            <span class="text-gray-300 text-sm">MW</span>
++                            <span class="text-gray-300 text-sm">{{ upload_info.unit or 'Not specified' }}</span>
+                         </div>
+                         
+                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                             <div class="flex items-center gap-3 mb-3">
+                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                 </svg>
+                                 <span class="text-white font-inter font-semibold text-sm">Energy Source</span>
+                             </div>
+-                            <span class="text-gray-300 text-sm">☀️ Solar</span>
++                            <span class="text-gray-300 text-sm">
++                                {% if upload_info.source_type == 'solar' %}☀️ Solar
++                                {% elif upload_info.source_type == 'wind' %}💨 Wind
++                                {% elif upload_info.source_type == 'coal' %}⚫ Coal
++                                {% elif upload_info.source_type == 'natural_gas' %}🔥 Natural Gas
++                                {% elif upload_info.source_type == 'nuclear' %}⚛️ Nuclear
++                                {% elif upload_info.source_type == 'hydro' %}💧 Hydroelectric
++                                {% elif upload_info.source_type == 'biomass' %}🌱 Biomass
++                                {% elif upload_info.source_type == 'geothermal' %}🌋 Geothermal
++                                {% else %}Not specified
++                                {% endif %}
++                            </span>
+                         </div>
++                        {% else %}
++                        <div class="col-span-full bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-8 border border-gray-700 text-center">
++                            <div class="flex flex-col items-center gap-4">
++                                <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
++                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
++                                </svg>
++                                <div>
++                                    <h3 class="text-white font-inter font-semibold text-lg mb-2">No CSV Data Uploaded</h3>
++                                    <p class="text-gray-400 text-sm mb-4">Please upload a CSV file first to view analysis parameters</p>
++                                    <a href="/upload" class="bg-[#629a44] hover:bg-[#5a8a3d] text-white px-6 py-2 rounded-lg transition-colors duration-300 font-inter font-medium">
++                                        Upload CSV File
++                                    </a>
++                                </div>
++                            </div>
++                        </div>
++                        {% endif %}
+                     </div>
+ 
+                     <!-- CSV Upload Status -->
+                     <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 mb-8 border border-gray-700 shadow-lg">
+                         <div class="flex items-center justify-center">
+                             <div class="text-center">
++                                {% if upload_info %}
+                                 <div class="w-20 h-20 bg-[#629a44] bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
+                                     <svg class="w-10 h-10 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                     </svg>
+                                 </div>
+                                 <h3 class="font-outfit font-semibold text-white text-2xl mb-3">
+-                                    Sensor data CSV
++                                    {{ upload_info.original_filename }}
+                                 </h3>
+-                                <p class="text-gray-400 text-base mb-4">File Name - 100%</p>
++                                <p class="text-gray-400 text-base mb-4">{{ upload_info.file_size }}MB - Upload Complete</p>
+                                 <div class="w-full bg-gray-700 rounded-full h-2 mb-6">
+                                     <div class="bg-[#629a44] h-2 rounded-full w-full"></div>
+                                 </div>
++                                {% else %}
++                                <div class="w-20 h-20 bg-gray-600 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
++                                    <svg class="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
++                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
++                                    </svg>
++                                </div>
++                                <h3 class="font-outfit font-semibold text-white text-2xl mb-3">
++                                    No CSV File Uploaded
++                                </h3>
++                                <p class="text-gray-400 text-base mb-4">Please upload a CSV file to begin analysis</p>
++                                <div class="w-full bg-gray-700 rounded-full h-2 mb-6">
++                                    <div class="bg-gray-600 h-2 rounded-full w-0"></div>
++                                </div>
++                                {% endif %}
+                             </div>
+                         </div>
+                     </div>

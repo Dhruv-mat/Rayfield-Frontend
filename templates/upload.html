@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rayfield Systems - Data Upload</title>
+    <title>Rayfield Systems - CSV Upload</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
@@ -83,6 +83,13 @@
                 <h1 class="font-outfit font-bold text-white text-2xl">Rayfield Systems</h1>
             </div>
 
+            <!-- Navigation -->
+            <div class="absolute top-[40px] left-1/2 -translate-x-1/2 flex items-center gap-6 slide-in">
+                <a href="/dashboard" class="text-gray-400 hover:text-white transition-colors duration-300 font-inter font-medium">Dashboard</a>
+                <span class="text-[#629a44] font-inter font-semibold">Upload CSV</span>
+                <span class="text-gray-500 font-inter font-medium">Analysis</span>
+            </div>
+
             <!-- User Info and Logout -->
             <div class="absolute top-[40px] right-[40px] flex items-center gap-4 slide-in">
                 <div class="flex items-center gap-3 bg-[#2a2a2a] px-4 py-2 rounded-lg border border-gray-700">
@@ -100,13 +107,13 @@
             <div class="absolute w-full max-w-[1360px] top-[120px] left-1/2 -translate-x-1/2 px-8">
                 <!-- Main Upload Card -->
                 <div class="relative glass-effect rounded-[25px] shadow-2xl p-8 slide-in">
-                    <!-- Dashboard Title -->
+                    <!-- Upload Title -->
                     <div class="text-center mb-10">
                         <h2 class="font-outfit font-semibold text-white text-[36px] mb-3">
-                            Energy Data Upload Portal
+                            CSV Data Upload
                         </h2>
                         <p class="font-inter text-gray-400 text-lg">
-                            Upload your CSV data files and configure parameters for analysis
+                            Upload your CSV file with energy data for analysis
                         </p>
                     </div>
 
@@ -120,7 +127,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                                     </svg>
                                 </div>
-                                <h3 class="font-outfit font-semibold text-white text-xl">CSV File Upload</h3>
+                                <h3 class="font-outfit font-semibold text-white text-xl">Select CSV File</h3>
                             </div>
                             
                             <div class="upload-zone border-2 border-dashed border-gray-500 rounded-xl p-12 text-center cursor-pointer">
@@ -156,7 +163,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 100 4m0-4v2m0-6V4"></path>
                                     </svg>
                                 </div>
-                                <h3 class="font-outfit font-semibold text-white text-xl">Data Configuration</h3>
+                                <h3 class="font-outfit font-semibold text-white text-xl">Data Parameters</h3>
                             </div>
                             
                             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -230,15 +237,6 @@
 
                         <!-- Action Buttons -->
                         <div class="flex justify-center gap-6 mb-8">
-                            <a
-                                href="/upload"
-                                class="btn-primary text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg flex items-center gap-3 no-underline"
-                            >
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                </svg>
-                                Quick Upload
-                            </a>
                             <button
                                 type="submit"
                                 class="btn-primary text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg flex items-center gap-3"
@@ -246,7 +244,7 @@
                                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
                                 </svg>
-                                Upload Data
+                                Upload & Analyze
                             </button>
                             <button
                                 type="button"
@@ -261,30 +259,56 @@
                         </div>
                     </form>
 
+                    <!-- Progress Steps -->
+                    <div class="flex justify-center items-center gap-8 mb-8">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center">
+                                <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                                </svg>
+                            </div>
+                            <span class="text-gray-300 font-inter text-sm">Dashboard</span>
+                        </div>
+                        <div class="w-12 h-0.5 bg-[#629a44]"></div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-[#629a44] rounded-full flex items-center justify-center pulse-dot">
+                                <span class="text-white text-sm font-semibold">2</span>
+                            </div>
+                            <span class="text-white font-inter text-sm font-semibold">Upload CSV</span>
+                        </div>
+                        <div class="w-12 h-0.5 bg-gray-600"></div>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center">
+                                <span class="text-gray-400 text-sm font-semibold">3</span>
+                            </div>
+                            <span class="text-gray-400 font-inter text-sm">Analysis</span>
+                        </div>
+                    </div>
+
                     <!-- Status Dashboard -->
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         <div class="status-card rounded-xl p-6">
                             <div class="flex items-center gap-3 mb-3">
                                 <div class="w-3 h-3 bg-green-500 rounded-full pulse-dot"></div>
-                                <span class="text-white font-inter font-semibold">System Status</span>
+                                <span class="text-white font-inter font-semibold">Upload Status</span>
                             </div>
-                            <span class="text-gray-300 text-sm">Ready for upload</span>
+                            <span class="text-gray-300 text-sm">Ready for CSV upload</span>
                         </div>
                         
                         <div class="status-card rounded-xl p-6">
                             <div class="flex items-center gap-3 mb-3">
                                 <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
-                                <span class="text-white font-inter font-semibold">Files Processed</span>
+                                <span class="text-white font-inter font-semibold">File Size Limit</span>
                             </div>
-                            <span id="uploadCount" class="text-gray-300 text-sm">0 files</span>
+                            <span class="text-gray-300 text-sm">Up to 400MB</span>
                         </div>
                         
                         <div class="status-card rounded-xl p-6">
                             <div class="flex items-center gap-3 mb-3">
                                 <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                                <span class="text-white font-inter font-semibold">Last Activity</span>
+                                <span class="text-white font-inter font-semibold">Next Step</span>
                             </div>
-                            <span id="lastUpload" class="text-gray-300 text-sm">No recent activity</span>
+                            <span class="text-gray-300 text-sm">Analysis Dashboard</span>
                         </div>
                     </div>
                 </div>
@@ -296,8 +320,6 @@
     <div id="message" class="fixed top-6 right-6 p-4 rounded-xl text-white hidden z-50 shadow-2xl border border-opacity-20"></div>
 
     <script>
-        let uploadCount = 0;
-
         // Enhanced message function
         function showMessage(text, type = 'info') {
             const messageEl = document.getElementById('message');
@@ -350,7 +372,7 @@
             }
         });
 
-        // Enhanced upload form handler
+        // Enhanced upload form handler with auto-redirect
         document.getElementById('uploadForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             
@@ -384,7 +406,7 @@
             const formData = new FormData(e.target);
             
             try {
-                const response = await fetch('/upload-data', {
+                const response = await fetch('/upload-csv', {
                     method: 'POST',
                     body: formData,
                 });
@@ -393,15 +415,16 @@
                 
                 if (data.success) {
                     showMessage(`✅ ${data.message}`, 'success');
-                    uploadCount++;
-                    document.getElementById('uploadCount').textContent = `${uploadCount} files`;
-                    document.getElementById('lastUpload').textContent = new Date().toLocaleString();
                     
-                    // Reset form with animation
+                    // Show redirect message
                     setTimeout(() => {
-                        e.target.reset();
-                        document.getElementById('fileName').classList.add('hidden');
+                        showMessage('🔄 Redirecting to analysis page...', 'info');
                     }, 1000);
+                    
+                    // Auto-redirect to analysis page
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2000);
                 } else {
                     showMessage(`❌ ${data.message}`, 'error');
                 }
