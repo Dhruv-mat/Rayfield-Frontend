@@ -121,76 +121,6 @@ def upload_data():
             # Save parameters
             save_upload_parameters(session['user_email'], filename, location, unit, source_type)
             
-            # Get file info for response
-            file_size_mb = round(file_size / (1024 * 1024), 2)
-            
-            return jsonify({
-                'success': True, 
-                'message': f'Large CSV file ({file_size_mb}MB) uploaded successfully with parameters'
-            })
-        else:
-            return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
-    
-    except Exception as e:
-        # Handle any unexpected errors
-        return jsonify({'success': False, 'message': f'Upload failed: {str(e)}'}), 500
-
-@app.route('/dashboard')
-def dashboard():
-    if 'user_email' not in session:
-        return redirect(url_for('index'))
-    return render_template('dashboard.html', user_email=session['user_email'])
-
-@app.route('/upload')
-def upload_page():
-    if 'user_email' not in session:
-        return redirect(url_for('index'))
-    return render_template('upload.html', user_email=session['user_email'])
-
-@app.route('/upload-csv', methods=['POST'])
-def upload_csv():
-    if 'user_email' not in session:
-        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
-    
-    try:
-        # Check if file is present
-        if 'file' not in request.files:
-            return jsonify({'success': False, 'message': 'No file selected'}), 400
-        
-        file = request.files['file']
-        location = request.form.get('location')
-        unit = request.form.get('unit')
-        source_type = request.form.get('source_type')
-        
-        if file.filename == '':
-            return jsonify({'success': False, 'message': 'No file selected'}), 400
-        
-        if not all([location, unit, source_type]):
-            return jsonify({'success': False, 'message': 'Please fill in all parameters'}), 400
-        
-        if file and file.filename.endswith('.csv'):
-            # Validate file size
-            file.seek(0, os.SEEK_END)
-            file_size = file.tell()
-            file.seek(0)  # Reset file pointer
-            
-            if file_size > 400 * 1024 * 1024:  # 400MB limit
-                return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
-            
-            # Save uploaded file
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"{timestamp}_{file.filename}"
-            file_path = os.path.join(UPLOADS_FOLDER, filename)
-            
-            # Save file
-            try:
-                file.save(file_path)
-            except Exception as e:
-                return jsonify({'success': False, 'message': f'Error saving file: {str(e)}'}), 500
-            
-            # Save parameters
-            save_upload_parameters(session['user_email'], filename, location, unit, source_type)
-            
             # Store upload info in session for analysis page
             session['last_upload'] = {
                 'filename': filename,
@@ -214,6 +144,99 @@ def upload_csv():
             return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
     
     except Exception as e:
+        # Handle any unexpected errors
+        return jsonify({'success': False, 'message': f'Upload failed: {str(e)}'}), 500
+
+@app.route('/dashboard')
+def dashboard():
+    if 'user_email' not in session:
+        return redirect(url_for('index'))
+    return render_template('dashboard.html', user_email=session['user_email'])
+
+# CSV file to store analysis parameters
+ANALYSIS_PARAMETERS_FILE = 'analysis_parameters.csv'
+
+def init_analysis_csv():
+    """Initialize analysis parameters CSV file with headers if it doesn't exist"""
+    if not os.path.exists(ANALYSIS_PARAMETERS_FILE):
+        with open(ANALYSIS_PARAMETERS_FILE, 'w', newline='') as file:
+            writer = csv.writer(file)
+            writer.writerow(['user_email', 'timestamp', 'sensor_filename', 'num_solar_panels', 'anomaly_threshold', 'time_frame', 'expected_output'])
+
+def save_analysis_parameters(user_email, sensor_filename, num_solar_panels, anomaly_threshold, time_frame, expected_output):
+    """Save analysis parameters to CSV file"""
+    with open(ANALYSIS_PARAMETERS_FILE, 'a', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow([user_email, datetime.now().isoformat(), sensor_filename, num_solar_panels, anomaly_threshold, time_frame, expected_output])
+
+@app.route('/upload-sensor-data', methods=['POST'])
+def upload_sensor_data():
+    if 'user_email' not in session:
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+    
+    try:
+        # Check if file is present
+        if 'file' not in request.files:
+            return jsonify({'success': False, 'message': 'No file selected'}), 400
+        
+        file = request.files['file']
+        num_solar_panels = request.form.get('num_solar_panels')
+        anomaly_threshold = request.form.get('anomaly_threshold')
+        time_frame = request.form.get('time_frame')
+        expected_output = request.form.get('expected_output')
+        
+        if file.filename == '':
+            return jsonify({'success': False, 'message': 'No file selected'}), 400
+        
+        if not all([num_solar_panels, anomaly_threshold, time_frame, expected_output]):
+            return jsonify({'success': False, 'message': 'Please fill in all parameters'}), 400
+        
+        if file and file.filename.endswith('.csv'):
+            # Validate file size
+            file.seek(0, os.SEEK_END)
+            file_size = file.tell()
+            file.seek(0)  # Reset file pointer
+            
+            if file_size > 400 * 1024 * 1024:  # 400MB limit
+                return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
+            
+            # Save uploaded file
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            filename = f"{timestamp}_sensor_{file.filename}"
+            file_path = os.path.join(UPLOADS_FOLDER, filename)
+            
+            # Save file
+            try:
+                file.save(file_path)
+            except Exception as e:
+                return jsonify({'success': False, 'message': f'Error saving file: {str(e)}'}), 500
+            
+            # Save analysis parameters
+            save_analysis_parameters(session['user_email'], filename, num_solar_panels, anomaly_threshold, time_frame, expected_output)
+            
+            # Update session with sensor data info
+            session['sensor_upload'] = {
+                'filename': filename,
+                'original_filename': file.filename,
+                'num_solar_panels': num_solar_panels,
+                'anomaly_threshold': anomaly_threshold,
+                'time_frame': time_frame,
+                'expected_output': expected_output,
+                'file_size': round(file_size / (1024 * 1024), 2),
+                'timestamp': datetime.now().isoformat()
+            }
+            
+            # Get file info for response
+            file_size_mb = round(file_size / (1024 * 1024), 2)
+            
+            return jsonify({
+                'success': True, 
+                'message': f'Sensor data CSV file ({file_size_mb}MB) uploaded successfully with analysis parameters'
+            })
+        else:
+            return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
+    
+    except Exception as e:
         return jsonify({'success': False, 'message': f'Upload failed: {str(e)}'}), 500
 
 @app.route('/analysis')
@@ -223,7 +246,8 @@ def analysis():
     
     # Get last upload info from session
     upload_info = session.get('last_upload', {})
-    return render_template('analysis.html', user_email=session['user_email'], upload_info=upload_info)
+    sensor_info = session.get('sensor_upload', {})
+    return render_template('analysis.html', user_email=session['user_email'], upload_info=upload_info, sensor_info=sensor_info)
 
 @app.route('/logout')
 def logout():
@@ -232,4 +256,5 @@ def logout():
 
 if __name__ == '__main__':
     init_csv()
+    init_analysis_csv()
     app.run(debug=True, host='0.0.0.0', port=5000, threaded=True)

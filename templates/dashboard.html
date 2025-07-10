@@ -230,15 +230,6 @@
 
                         <!-- Action Buttons -->
                         <div class="flex justify-center gap-6 mb-8">
-                            <a
-                                href="/upload"
-                                class="btn-primary text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg flex items-center gap-3 no-underline"
-                            >
-                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                </svg>
-                                Quick Upload
-                            </a>
                             <button
                                 type="submit"
                                 class="btn-primary text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg flex items-center gap-3"
@@ -397,11 +388,14 @@
                     document.getElementById('uploadCount').textContent = `${uploadCount} files`;
                     document.getElementById('lastUpload').textContent = new Date().toLocaleString();
                     
-                    // Reset form with animation
+                    // Show redirect message and redirect to analysis
                     setTimeout(() => {
-                        e.target.reset();
-                        document.getElementById('fileName').classList.add('hidden');
-                    }, 1000);
+                        showMessage('🔄 Redirecting to analysis page...', 'info');
+                    }, 1500);
+                    
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2500);
                 } else {
                     showMessage(`❌ ${data.message}`, 'error');
                 }

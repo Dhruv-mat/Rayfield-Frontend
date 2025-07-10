@@ -1,113 +1,510 @@
-@@ .. @@
-                     <!-- Upload Summary Cards -->
-                     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-+                        {% if upload_info %}
-                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
-                             <div class="flex items-center gap-3 mb-3">
-                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-                                 </svg>
-                                 <span class="text-white font-inter font-semibold text-sm">File Name</span>
-                             </div>
--                            <span class="text-gray-300 text-sm">generation_data.csv</span>
-+                            <span class="text-gray-300 text-sm">{{ upload_info.original_filename or 'No file uploaded' }}</span>
-                         </div>
-                         
-                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
-                             <div class="flex items-center gap-3 mb-3">
-                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                 </svg>
-                                 <span class="text-white font-inter font-semibold text-sm">Location</span>
-                             </div>
--                            <span class="text-gray-300 text-sm">Niagara Falls</span>
-+                            <span class="text-gray-300 text-sm">{{ upload_info.location or 'Not specified' }}</span>
-                         </div>
-                         
-                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
-                             <div class="flex items-center gap-3 mb-3">
-                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
-                                 </svg>
-                                 <span class="text-white font-inter font-semibold text-sm">Unit</span>
-                             </div>
--                            <span class="text-gray-300 text-sm">MW</span>
-+                            <span class="text-gray-300 text-sm">{{ upload_info.unit or 'Not specified' }}</span>
-                         </div>
-                         
-                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
-                             <div class="flex items-center gap-3 mb-3">
-                                 <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
-                                 </svg>
-                                 <span class="text-white font-inter font-semibold text-sm">Energy Source</span>
-                             </div>
--                            <span class="text-gray-300 text-sm">☀️ Solar</span>
-+                            <span class="text-gray-300 text-sm">
-+                                {% if upload_info.source_type == 'solar' %}☀️ Solar
-+                                {% elif upload_info.source_type == 'wind' %}💨 Wind
-+                                {% elif upload_info.source_type == 'coal' %}⚫ Coal
-+                                {% elif upload_info.source_type == 'natural_gas' %}🔥 Natural Gas
-+                                {% elif upload_info.source_type == 'nuclear' %}⚛️ Nuclear
-+                                {% elif upload_info.source_type == 'hydro' %}💧 Hydroelectric
-+                                {% elif upload_info.source_type == 'biomass' %}🌱 Biomass
-+                                {% elif upload_info.source_type == 'geothermal' %}🌋 Geothermal
-+                                {% else %}Not specified
-+                                {% endif %}
-+                            </span>
-                         </div>
-+                        {% else %}
-+                        <div class="col-span-full bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-8 border border-gray-700 text-center">
-+                            <div class="flex flex-col items-center gap-4">
-+                                <svg class="w-12 h-12 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
-+                                </svg>
-+                                <div>
-+                                    <h3 class="text-white font-inter font-semibold text-lg mb-2">No CSV Data Uploaded</h3>
-+                                    <p class="text-gray-400 text-sm mb-4">Please upload a CSV file first to view analysis parameters</p>
-+                                    <a href="/upload" class="bg-[#629a44] hover:bg-[#5a8a3d] text-white px-6 py-2 rounded-lg transition-colors duration-300 font-inter font-medium">
-+                                        Upload CSV File
-+                                    </a>
-+                                </div>
-+                            </div>
-+                        </div>
-+                        {% endif %}
-                     </div>
- 
-                     <!-- CSV Upload Status -->
-                     <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 mb-8 border border-gray-700 shadow-lg">
-                         <div class="flex items-center justify-center">
-                             <div class="text-center">
-+                                {% if upload_info %}
-                                 <div class="w-20 h-20 bg-[#629a44] bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
-                                     <svg class="w-10 h-10 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                     </svg>
-                                 </div>
-                                 <h3 class="font-outfit font-semibold text-white text-2xl mb-3">
--                                    Sensor data CSV
-+                                    {{ upload_info.original_filename }}
-                                 </h3>
--                                <p class="text-gray-400 text-base mb-4">File Name - 100%</p>
-+                                <p class="text-gray-400 text-base mb-4">{{ upload_info.file_size }}MB - Upload Complete</p>
-                                 <div class="w-full bg-gray-700 rounded-full h-2 mb-6">
-                                     <div class="bg-[#629a44] h-2 rounded-full w-full"></div>
-                                 </div>
-+                                {% else %}
-+                                <div class="w-20 h-20 bg-gray-600 bg-opacity-20 rounded-full flex items-center justify-center mb-6 mx-auto">
-+                                    <svg class="w-10 h-10 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-+                                    </svg>
-+                                </div>
-+                                <h3 class="font-outfit font-semibold text-white text-2xl mb-3">
-+                                    No CSV File Uploaded
-+                                </h3>
-+                                <p class="text-gray-400 text-base mb-4">Please upload a CSV file to begin analysis</p>
-+                                <div class="w-full bg-gray-700 rounded-full h-2 mb-6">
-+                                    <div class="bg-gray-600 h-2 rounded-full w-0"></div>
-+                                </div>
-+                                {% endif %}
-                             </div>
-                         </div>
-                     </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayfield Systems - Analysis Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .blur-effect { filter: blur(200px); }
+        .glass-effect {
+            background: rgba(31, 31, 31, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .input-glow:focus {
+            box-shadow: 0 0 0 2px rgba(98, 154, 68, 0.3);
+        }
+        .upload-zone {
+            transition: all 0.3s ease;
+        }
+        .upload-zone:hover {
+            border-color: #629a44;
+            background-color: rgba(98, 154, 68, 0.05);
+        }
+        .upload-zone.drag-over {
+            border-color: #629a44;
+            background-color: rgba(98, 154, 68, 0.1);
+            transform: scale(1.02);
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #629a44 0%, #5a8a3d 100%);
+            box-shadow: 0 4px 15px rgba(98, 154, 68, 0.3);
+            transition: all 0.3s ease;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(98, 154, 68, 0.4);
+        }
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .dotted-border {
+            border: 2px dotted rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-[#212121] min-h-screen">
+    <div class="bg-[#212121] flex flex-row justify-center w-full min-h-screen">
+        <div class="bg-[#212121] overflow-hidden w-full max-w-[1440px] relative">
+            <!-- Animated Background Elements -->
+            <div class="absolute w-[400px] h-[400px] top-[150px] right-[200px] bg-[#629a44] rounded-full blur-effect opacity-20"></div>
+            <div class="absolute w-[300px] h-[300px] top-[400px] left-[100px] bg-[#4a7c32] rounded-full blur-effect opacity-15"></div>
+
+            <!-- Header -->
+            <div class="absolute top-[40px] left-[40px] flex items-center gap-4 slide-in">
+                <div class="w-[45px] h-[45px] bg-gradient-to-br from-[#629a44] to-[#5a8a3d] rounded-xl flex items-center justify-center shadow-lg">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1 class="font-outfit font-bold text-white text-2xl">Rayfield Systems</h1>
+            </div>
+
+            <!-- User Info and Logout -->
+            <div class="absolute top-[40px] right-[40px] flex items-center gap-4 slide-in">
+                <div class="flex items-center gap-3 bg-[#2a2a2a] px-4 py-2 rounded-lg border border-gray-700">
+                    <div class="w-8 h-8 bg-gradient-to-br from-[#629a44] to-[#5a8a3d] rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-semibold">{{ user_email[0].upper() }}</span>
+                    </div>
+                    <span class="text-gray-300 font-inter text-sm">{{ user_email }}</span>
+                </div>
+                <a href="/logout" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-4 py-2 rounded-lg transition-all duration-300 font-inter font-medium shadow-lg hover:shadow-xl">
+                    Logout
+                </a>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="absolute w-full max-w-[1360px] top-[120px] left-1/2 -translate-x-1/2 px-8">
+                <!-- Main Analysis Card -->
+                <div class="relative glass-effect rounded-[25px] shadow-2xl p-8 slide-in">
+                    <!-- Analysis Title -->
+                    <div class="text-center mb-10">
+                        <h2 class="font-outfit font-semibold text-white text-[36px] mb-3">
+                            Solar Panel Analysis Dashboard
+                        </h2>
+                        <p class="font-inter text-gray-400 text-lg">
+                            Configure analysis parameters and upload sensor data for comprehensive insights
+                        </p>
+                    </div>
+
+                    <!-- Three Column Layout -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                        <!-- Left Column - Summarisation -->
+                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 border border-gray-700 shadow-lg">
+                            <h3 class="font-outfit font-semibold text-white text-2xl mb-8">Summarisation</h3>
+                            
+                            <div class="space-y-6">
+                                <!-- No. of objects -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">No. of objects</label>
+                                    <input
+                                        type="text"
+                                        name="num_solar_panels"
+                                        id="numSolarPanels"
+                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
+                                        placeholder="choose how many solar panels"
+                                    />
+                                </div>
+
+                                <!-- Anomaly Threshold -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">Anomaly Threshold</label>
+                                    <input
+                                        type="text"
+                                        name="anomaly_threshold"
+                                        id="anomalyThreshold"
+                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
+                                        placeholder="i.e when is anomaly marked"
+                                    />
+                                </div>
+
+                                <!-- Time frame -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">Time frame</label>
+                                    <input
+                                        type="text"
+                                        name="time_frame"
+                                        id="timeFrame"
+                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
+                                        placeholder="e.g - Entire Duration"
+                                    />
+                                </div>
+
+                                <!-- Expected output -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">Expected output</label>
+                                    <input
+                                        type="text"
+                                        name="expected_output"
+                                        id="expectedOutput"
+                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
+                                        placeholder="Expected daily output"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Center Column - Sensor data CSV -->
+                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 border border-gray-700 shadow-lg">
+                            <div class="flex flex-col items-center justify-center h-full">
+                                <!-- Upload Zone -->
+                                <form id="sensorUploadForm" enctype="multipart/form-data" class="w-full">
+                                    <div class="dotted-border rounded-2xl p-8 text-center cursor-pointer upload-zone">
+                                        <input
+                                            type="file"
+                                            id="sensorFile"
+                                            name="file"
+                                            accept=".csv"
+                                            required
+                                            class="hidden"
+                                        />
+                                        <label for="sensorFile" class="cursor-pointer block">
+                                            <div class="flex flex-col items-center">
+                                                <div class="w-16 h-16 bg-[#629a44] bg-opacity-20 rounded-full flex items-center justify-center mb-4">
+                                                    <svg class="w-8 h-8 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                                    </svg>
+                                                </div>
+                                                <h3 class="font-outfit font-semibold text-white text-xl mb-2">Sensor data</h3>
+                                                <h3 class="font-outfit font-semibold text-white text-xl mb-4">CSV</h3>
+                                                <span class="text-gray-400 text-sm">File Name - 100%</span>
+                                            </div>
+                                        </label>
+                                        <div id="sensorFileName" class="mt-6 p-3 bg-[#629a44] bg-opacity-20 rounded-lg text-[#629a44] font-medium hidden"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Right Column - Graph -->
+                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 border border-gray-700 shadow-lg">
+                            <h3 class="font-outfit font-semibold text-white text-2xl mb-8">Graph</h3>
+                            
+                            <div class="space-y-6">
+                                <!-- No. of objects -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">No. of objects</label>
+                                    <input
+                                        type="text"
+                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
+                                        placeholder="e.g - All panels"
+                                    />
+                                </div>
+
+                                <!-- X axis -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">X axis</label>
+                                    <input
+                                        type="text"
+                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
+                                        placeholder="e.g - Date"
+                                    />
+                                </div>
+
+                                <!-- Y axis -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">Y axis</label>
+                                    <input
+                                        type="text"
+                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
+                                        placeholder="e.g - kW"
+                                    />
+                                </div>
+
+                                <!-- Notes -->
+                                <div class="space-y-3">
+                                    <label class="font-inter text-white text-sm font-semibold">Notes</label>
+                                    <textarea
+                                        class="w-full h-[100px] bg-[#484848] rounded-xl text-white px-4 py-3 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300 resize-none"
+                                        placeholder="Any extra info....."
+                                    ></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-center gap-6 mb-8">
+                        <button
+                            type="button"
+                            id="uploadSensorData"
+                            class="btn-primary text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg flex items-center gap-3"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                            </svg>
+                            Upload Sensor Data
+                        </button>
+                        <button
+                            type="button"
+                            id="resetAnalysisForm"
+                            class="bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                            </svg>
+                            Reset Parameters
+                        </button>
+                    </div>
+
+                    <!-- Upload Status -->
+                    {% if upload_info %}
+                    <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-6 mb-6 border border-gray-700">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                            <span class="text-white font-inter font-semibold">Energy Data Uploaded</span>
+                        </div>
+                        <span class="text-gray-300 text-sm">{{ upload_info.original_filename }} ({{ upload_info.file_size }}MB) - {{ upload_info.location }}</span>
+                    </div>
+                    {% endif %}
+
+                    {% if sensor_info %}
+                    <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-6 border border-gray-700">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full"></div>
+                            <span class="text-white font-inter font-semibold">Sensor Data Uploaded</span>
+                        </div>
+                        <span class="text-gray-300 text-sm">{{ sensor_info.original_filename }} ({{ sensor_info.file_size }}MB) - {{ sensor_info.num_solar_panels }} panels</span>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Enhanced Message Display -->
+    <div id="message" class="fixed top-6 right-6 p-4 rounded-xl text-white hidden z-50 shadow-2xl border border-opacity-20"></div>
+
+    <script>
+        // Enhanced message function
+        function showMessage(text, type = 'info') {
+            const messageEl = document.getElementById('message');
+            messageEl.textContent = text;
+            
+            const colors = {
+                error: 'bg-gradient-to-r from-red-600 to-red-700 border-red-500',
+                success: 'bg-gradient-to-r from-green-600 to-green-700 border-green-500',
+                info: 'bg-gradient-to-r from-blue-600 to-blue-700 border-blue-500'
+            };
+            
+            messageEl.className = `fixed top-6 right-6 p-4 rounded-xl text-white z-50 shadow-2xl border border-opacity-20 ${colors[type]} slide-in`;
+            messageEl.classList.remove('hidden');
+            
+            setTimeout(() => {
+                messageEl.style.opacity = '0';
+                messageEl.style.transform = 'translateX(100%)';
+                setTimeout(() => {
+                    messageEl.classList.add('hidden');
+                    messageEl.style.opacity = '1';
+                    messageEl.style.transform = 'translateX(0)';
+                }, 300);
+            }, 4000);
+        }
+
+        // File input handler for sensor data
+        document.getElementById('sensorFile').addEventListener('change', (e) => {
+            const fileName = e.target.files[0]?.name;
+            const fileSize = e.target.files[0]?.size;
+            const fileNameEl = document.getElementById('sensorFileName');
+            
+            if (fileName) {
+                const fileSizeMB = (fileSize / (1024 * 1024)).toFixed(2);
+                fileNameEl.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Selected: ${fileName} (${fileSizeMB}MB)</span>
+                    </div>
+                `;
+                fileNameEl.classList.remove('hidden');
+                
+                if (fileSize > 100 * 1024 * 1024) { // 100MB
+                    showMessage(`⚠️ Large sensor file detected (${fileSizeMB}MB). Upload may take longer.`, 'info');
+                }
+            } else {
+                fileNameEl.classList.add('hidden');
+            }
+        });
+
+        // Upload sensor data handler
+        document.getElementById('uploadSensorData').addEventListener('click', async () => {
+            const fileInput = document.getElementById('sensorFile');
+            const file = fileInput.files[0];
+            
+            if (!file) {
+                showMessage('❌ Please select a sensor data CSV file first.', 'error');
+                return;
+            }
+
+            // Get analysis parameters
+            const numSolarPanels = document.getElementById('numSolarPanels').value;
+            const anomalyThreshold = document.getElementById('anomalyThreshold').value;
+            const timeFrame = document.getElementById('timeFrame').value;
+            const expectedOutput = document.getElementById('expectedOutput').value;
+
+            if (!numSolarPanels || !anomalyThreshold || !timeFrame || !expectedOutput) {
+                showMessage('❌ Please fill in all analysis parameters.', 'error');
+                return;
+            }
+
+            // Check file size
+            if (file.size > 400 * 1024 * 1024) { // 400MB
+                showMessage('❌ File too large. Maximum size is 400MB.', 'error');
+                return;
+            }
+
+            const submitBtn = document.getElementById('uploadSensorData');
+            const originalText = submitBtn.innerHTML;
+            
+            // Show loading state
+            const isLargeFile = file.size > 50 * 1024 * 1024; // 50MB
+            submitBtn.innerHTML = `
+                <svg class="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+                ${isLargeFile ? 'Processing Large File...' : 'Uploading...'}
+            `;
+            submitBtn.disabled = true;
+
+            // Create form data
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('num_solar_panels', numSolarPanels);
+            formData.append('anomaly_threshold', anomalyThreshold);
+            formData.append('time_frame', timeFrame);
+            formData.append('expected_output', expectedOutput);
+
+            try {
+                const response = await fetch('/upload-sensor-data', {
+                    method: 'POST',
+                    body: formData,
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage(`✅ ${data.message}`, 'success');
+                    
+                    // Reload page to show updated status
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 2000);
+                } else {
+                    showMessage(`❌ ${data.message}`, 'error');
+                }
+            } catch (error) {
+                if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+                    showMessage('❌ Upload timeout or network error. File may be too large.', 'error');
+                } else {
+                    showMessage('❌ Network error occurred while uploading.', 'error');
+                }
+            } finally {
+                // Restore button
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.disabled = false;
+                }, isLargeFile ? 2000 : 1000);
+            }
+        });
+
+        // Reset form handler
+        document.getElementById('resetAnalysisForm').addEventListener('click', () => {
+            document.getElementById('numSolarPanels').value = '';
+            document.getElementById('anomalyThreshold').value = '';
+            document.getElementById('timeFrame').value = '';
+            document.getElementById('expectedOutput').value = '';
+            document.getElementById('sensorFile').value = '';
+            document.getElementById('sensorFileName').classList.add('hidden');
+            showMessage('🔄 Analysis parameters reset successfully.', 'info');
+        });
+
+        // Drag and drop functionality for sensor file
+        const dropZone = document.querySelector('.upload-zone');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, preventDefaults, false);
+        });
+        
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+        
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, highlight, false);
+        });
+        
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, unhighlight, false);
+        });
+        
+        function highlight(e) {
+            dropZone.classList.add('drag-over');
+        }
+        
+        function unhighlight(e) {
+            dropZone.classList.remove('drag-over');
+        }
+        
+        dropZone.addEventListener('drop', handleDrop, false);
+        
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            
+            if (files.length > 0 && files[0].name.endsWith('.csv')) {
+                const file = files[0];
+                const fileSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                
+                if (file.size > 400 * 1024 * 1024) { // 400MB
+                    showMessage('❌ File too large. Maximum size is 400MB.', 'error');
+                    return;
+                }
+                
+                document.getElementById('sensorFile').files = files;
+                const fileName = file.name;
+                const fileNameEl = document.getElementById('sensorFileName');
+                fileNameEl.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span>Selected: ${fileName} (${fileSizeMB}MB)</span>
+                    </div>
+                `;
+                fileNameEl.classList.remove('hidden');
+                
+                if (file.size > 100 * 1024 * 1024) { // 100MB
+                    showMessage(`📁 Large sensor CSV file ready (${fileSizeMB}MB). Upload may take longer.`, 'info');
+                } else {
+                    showMessage('📁 Sensor CSV file ready for upload!', 'success');
+                }
+            } else {
+                showMessage('❌ Please drop a valid CSV file only.', 'error');
+            }
+        }
+
+        // Add smooth focus effects
+        document.querySelectorAll('input, textarea').forEach(element => {
+            element.addEventListener('focus', function() {
+                this.parentElement.style.transform = 'translateY(-2px)';
+            });
+            
+            element.addEventListener('blur', function() {
+                this.parentElement.style.transform = 'translateY(0)';
+            });
+        });
+    </script>
+</body>
+</html>
