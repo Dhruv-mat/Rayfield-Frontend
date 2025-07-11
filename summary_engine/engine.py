@@ -5,9 +5,10 @@ import pandas as pd
 print("Library imported successfully!")
 
 
-df = pd.read_csv(r"C:\Users\admin\Documents\GitHub\ray\summary_engine\bt.csv")
+df = pd.read_csv(r"C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Generation_Data.csv")
 print(df.head())  # check if it loaded properly
-
+df1 = pd.read_csv(r"C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Weather_Data.csv")
+print(df1.head())  # check if it loaded properly
 prompt = f"""
 You are an expert summarizer and analyst.
 
@@ -19,9 +20,10 @@ Given the following content, generate a comprehensive structured report with the
 4. 🔹 Recommendations: Actionable suggestions or next steps based on the content.
 5. 🔹 Detailed Summary: A deeper dive summarizing all the important information in a logical flow.
 
-Here is the content:
+Here is the content the generation data along witht he weather data:
 ---
 {df}
+{df1}
 ---
 Structure your output clearly with section headers. Be clear, concise, and informative.
 """
