@@ -61,11 +61,7 @@
             <!-- Header -->
             <div class="absolute top-[40px] left-[40px] flex items-center gap-4 slide-in">
                 <div class="w-[45px] h-[45px] bg-gradient-to-br from-[#629a44] to-[#5a8a3d] rounded-xl flex items-center justify-center shadow-lg">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linejoin="round"/>
-                    </svg>
+                    <img src="/public/image.png" alt="Rayfield Logo" class="w-6 h-6 object-contain">
                 </div>
                 <h1 class="font-outfit font-bold text-white text-2xl">Rayfield Systems</h1>
             </div>
@@ -98,7 +94,7 @@
                     </div>
 
                     <!-- Three Column Layout -->
-                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
                         <!-- Left Column - Summarisation -->
                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 border border-gray-700 shadow-lg">
                             <h3 class="font-outfit font-semibold text-white text-2xl mb-8">Summarisation</h3>
@@ -154,12 +150,12 @@
                             </div>
                         </div>
 
-                        <!-- Center Column - Sensor data CSV -->
+                        <!-- Right Column - Sensor data CSV (Extended) -->
                         <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 border border-gray-700 shadow-lg">
                             <div class="flex flex-col items-center justify-center h-full">
                                 <!-- Upload Zone -->
                                 <form id="sensorUploadForm" enctype="multipart/form-data" class="w-full">
-                                    <div class="dotted-border rounded-2xl p-8 text-center cursor-pointer upload-zone">
+                                    <div class="dotted-border rounded-2xl p-12 text-center cursor-pointer upload-zone">
                                         <input
                                             type="file"
                                             id="sensorFile"
@@ -170,65 +166,21 @@
                                         />
                                         <label for="sensorFile" class="cursor-pointer block">
                                             <div class="flex flex-col items-center">
-                                                <div class="w-16 h-16 bg-[#629a44] bg-opacity-20 rounded-full flex items-center justify-center mb-4">
-                                                    <svg class="w-8 h-8 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
-                                                    </svg>
+                                                <div class="w-20 h-20 bg-[#629a44] bg-opacity-20 rounded-2xl flex items-center justify-center mb-6">
+                                                    <img src="/public/image.png" alt="Rayfield Logo" class="w-12 h-12 object-contain">
                                                 </div>
-                                                <h3 class="font-outfit font-semibold text-white text-xl mb-2">Sensor data</h3>
-                                                <h3 class="font-outfit font-semibold text-white text-xl mb-4">CSV</h3>
-                                                <span class="text-gray-400 text-sm">File Name - 100%</span>
+                                                <h3 class="font-outfit font-semibold text-white text-2xl mb-2">Sensor Data</h3>
+                                                <h3 class="font-outfit font-semibold text-white text-2xl mb-6">CSV Upload</h3>
+                                                <div class="space-y-2">
+                                                    <span class="text-gray-400 text-base block">Drop your CSV file here</span>
+                                                    <span class="text-gray-500 text-sm block">or click to browse</span>
+                                                    <span class="text-gray-600 text-xs block">Supports: .csv files up to 400MB</span>
+                                                </div>
                                             </div>
                                         </label>
-                                        <div id="sensorFileName" class="mt-6 p-3 bg-[#629a44] bg-opacity-20 rounded-lg text-[#629a44] font-medium hidden"></div>
+                                        <div id="sensorFileName" class="mt-8 p-4 bg-[#629a44] bg-opacity-20 rounded-lg text-[#629a44] font-medium hidden"></div>
                                     </div>
                                 </form>
-                            </div>
-                        </div>
-
-                        <!-- Right Column - Graph -->
-                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 border border-gray-700 shadow-lg">
-                            <h3 class="font-outfit font-semibold text-white text-2xl mb-8">Graph</h3>
-                            
-                            <div class="space-y-6">
-                                <!-- No. of objects -->
-                                <div class="space-y-3">
-                                    <label class="font-inter text-white text-sm font-semibold">No. of objects</label>
-                                    <input
-                                        type="text"
-                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
-                                        placeholder="e.g - All panels"
-                                    />
-                                </div>
-
-                                <!-- X axis -->
-                                <div class="space-y-3">
-                                    <label class="font-inter text-white text-sm font-semibold">X axis</label>
-                                    <input
-                                        type="text"
-                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
-                                        placeholder="e.g - Date"
-                                    />
-                                </div>
-
-                                <!-- Y axis -->
-                                <div class="space-y-3">
-                                    <label class="font-inter text-white text-sm font-semibold">Y axis</label>
-                                    <input
-                                        type="text"
-                                        class="w-full h-[50px] bg-[#484848] rounded-xl text-white px-4 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300"
-                                        placeholder="e.g - kW"
-                                    />
-                                </div>
-
-                                <!-- Notes -->
-                                <div class="space-y-3">
-                                    <label class="font-inter text-white text-sm font-semibold">Notes</label>
-                                    <textarea
-                                        class="w-full h-[100px] bg-[#484848] rounded-xl text-white px-4 py-3 border-2 border-transparent outline-none placeholder-gray-400 font-inter input-glow transition-all duration-300 resize-none"
-                                        placeholder="Any extra info....."
-                                    ></textarea>
-                                </div>
                             </div>
                         </div>
                     </div>
