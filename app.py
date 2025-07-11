@@ -110,8 +110,7 @@ def upload_data():
                 return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
             
             # Save uploaded file
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"{timestamp}_{file.filename}"
+            filename = file.filename  # Save with exact original filename
             file_path = os.path.join(UPLOADS_FOLDER, filename)
             
             # Save file in chunks for large files
@@ -203,8 +202,7 @@ def upload_sensor_data():
                 return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
             
             # Save uploaded file
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
-            filename = f"{timestamp}_sensor_{file.filename}"
+            filename = file.filename  # Save with exact original filename
             file_path = os.path.join(UPLOADS_FOLDER, filename)
             
             # Save file
@@ -299,20 +297,6 @@ def run_model_processing():
             'success': False, 
             'message': f'Error running model processing: {str(e)}'
         })
-
-@app.route('/results')
-def results():
-    if 'user_email' not in session:
-        return redirect(url_for('index'))
-    
-    # Get upload info from session
-    upload_info = session.get('last_upload', {})
-    sensor_info = session.get('sensor_upload', {})
-    
-    return render_template('results.html', 
-                         user_email=session['user_email'], 
-                         upload_info=upload_info, 
-                         sensor_info=sensor_info)
 
 @app.route('/logout')
 def logout():
