@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, session, redirect, url_for
+from flask import send_from_directory
 import csv
 import os
 import hashlib
@@ -262,6 +263,55 @@ def loading():
         return redirect(url_for('index'))
     return render_template('loading.html', user_email=session['user_email'])
 
+@app.route('/summary')
+def summary():
+    if 'user_email' not in session:
+        return redirect(url_for('index'))
+    
+    # Read the gemini summary file
+    summary_content = ""
+    try:
+        with open('gemini_summary.txt', 'r', encoding='utf-8') as f:
+            summary_content = f.read()
+    except FileNotFoundError:
+        summary_content = "Summary not available. Please run the analysis first."
+    
+    # Parse the summary into sections
+    sections = {
+        'short_summary': '',
+        'overview': '',
+        'cause_analysis': '',
+        'recommendations': '',
+        'detailed_summary': ''
+    }
+    
+    if summary_content and summary_content != "Summary not available. Please run the analysis first.":
+        lines = summary_content.split('\n')
+        current_section = None
+        
+        for line in lines:
+            line = line.strip()
+            if '🔹 Short Summary' in line:
+                current_section = 'short_summary'
+            elif '🔹 Overview' in line:
+                current_section = 'overview'
+            elif '🔹 Cause Analysis' in line:
+                current_section = 'cause_analysis'
+            elif '🔹 Recommendations' in line:
+                current_section = 'recommendations'
+            elif '🔹 Detailed Summary' in line:
+                current_section = 'detailed_summary'
+            elif current_section and line and not line.startswith('**'):
+                if sections[current_section]:
+                    sections[current_section] += '\n' + line
+                else:
+                    sections[current_section] = line
+    
+    return render_template('summary.html', 
+                         user_email=session['user_email'], 
+                         sections=sections,
+                         raw_content=summary_content)
+
 @app.route('/run-model-processing', methods=['POST'])
 def run_model_processing():
     if 'user_email' not in session:
@@ -303,6 +353,14 @@ def run_model_processing():
             'success': False, 
             'message': f'Error running model processing: {str(e)}'
         })
+
+@app.route('/anomaly_analysis_results.png')
+def serve_anomaly_image():
+    return send_from_directory('.', 'anomaly_analysis_results.png')
+
+@app.route('/regression_model_visualization.png')
+def serve_regression_image():
+    return send_from_directory('.', 'regression_model_visualization.png')
 
 @app.route('/run-engine-processing', methods=['POST'])
 def run_engine_processing():
