@@ -171,7 +171,7 @@ def check_files_for_anomalies(generation_filepath, weather_filepath, model, thre
         for ax in axs: ax.grid(True, alpha=0.3)
         plt.xticks(rotation=45); plt.tight_layout(rect=[0, 0.03, 1, 0.97])
         plt.savefig('anomaly_analysis_results.png'); print("\nTime series plot saved to 'anomaly_analysis_results.png'")
-        plt.show()
+        plt.close()
 
         # --- Visualization 2: Regression Model ---
         print("Generating regression model plot...")
@@ -190,7 +190,7 @@ def check_files_for_anomalies(generation_filepath, weather_filepath, model, thre
         plt.title('Regression Model: Expected Power vs. Actual', fontsize=16)
         plt.xlabel('Irradiation'); plt.ylabel('AC Power (kW)'); plt.legend(); plt.grid(True, alpha=0.3)
         plt.savefig('regression_model_visualization.png'); print("\nRegression plot saved to 'regression_model_visualization.png'")
-        plt.show()
+        plt.close()
 
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
@@ -201,17 +201,17 @@ if __name__ == '__main__':
     print("--- Initializing Regression-Based Anomaly Detection System ---")
 
     regression_model, anomaly_threshold, plant_capacity = train_regression_model(
-        generation_path='Synthetic_Generation_Data.csv',
-        weather_path='Synthetic_Weather_Data.csv'
+        generation_path=r'C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Generation_Data.csv',
+        weather_path=r'C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Weather_Data.csv'
     )
 
     if regression_model:
-        while True:
-            print("\n" + "="*50)
-            gen_filepath = r"C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Generation_Data.csv"
-            if gen_filepath.lower() == 'exit':
-                break
-            weather_filepath = r"C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Weather_Data.csv"
-            check_files_for_anomalies(gen_filepath, weather_filepath, regression_model, anomaly_threshold, plant_capacity)
+        check_files_for_anomalies(
+            generation_filepath=r'C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Generation_Data.csv',
+            weather_filepath=r'C:\Users\admin\Documents\GitHub\ray\uploads\Synthetic_Weather_Data.csv',
+            model=regression_model,
+            threshold=anomaly_threshold,
+            plant_capacity_kwp=plant_capacity
+        )
 
     print("\n--- Process Complete ---")
