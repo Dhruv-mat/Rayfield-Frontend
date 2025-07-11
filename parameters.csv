@@ -1,3 +1,4 @@
 user_email,timestamp,filename,location,unit,source_type
 admin@rayfield.com,2025-07-11T09:45:08.006555,Synthetic_Generation_Data.csv,New York,GW,solar
 admin@rayfield.com,2025-07-11T11:05:42.165721,Synthetic_Generation_Data.csv,New York,kW,solar
+admin@rayfield.com,2025-07-11T11:45:00.617937,Synthetic_Generation_Data.csv,New York,kWh,solar
