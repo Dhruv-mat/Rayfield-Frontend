@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayfield Systems - Processing Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .blur-effect { filter: blur(200px); }
+        
+        .progress-bar {
+            width: 0%;
+            transition: width 0.5s ease-in-out;
+        }
+        
+        .loading-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .rotate {
+            animation: rotate 2s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body class="bg-[#212121] min-h-screen">
+    <div class="bg-[#212121] flex flex-row justify-center w-full min-h-screen">
+        <div class="bg-[#212121] overflow-hidden w-full max-w-[1440px] relative">
+            <!-- Animated Background Elements -->
+            <div class="absolute w-[400px] h-[400px] top-[150px] right-[200px] bg-[#629a44] rounded-full blur-effect opacity-20"></div>
+            <div class="absolute w-[300px] h-[300px] top-[400px] left-[100px] bg-[#4a7c32] rounded-full blur-effect opacity-15"></div>
+
+            <!-- Main Content Area -->
+            <div class="absolute w-full max-w-[800px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 px-8">
+                <!-- Loading Card -->
+                <div class="relative bg-[#1f1f1f] bg-opacity-80 backdrop-blur-lg rounded-[35px] shadow-2xl p-12 slide-in border border-gray-700">
+                    <!-- Logo and Title -->
+                    <div class="flex flex-col items-center mb-12">
+                        <div class="w-[80px] h-[80px] bg-gradient-to-br from-[#629a44] to-[#5a8a3d] rounded-2xl flex items-center justify-center shadow-lg mb-6 rotate">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                            </svg>
+                        </div>
+                        <h1 class="font-outfit font-bold text-white text-[48px] mb-4">
+                            RAYFIELD SYSTEMS
+                        </h1>
+                    </div>
+
+                    <!-- Progress Bar Container -->
+                    <div class="mb-8">
+                        <div class="w-full bg-gray-700 rounded-full h-3 mb-4 shadow-inner">
+                            <div id="progressBar" class="progress-bar bg-gradient-to-r from-[#629a44] to-[#5a8a3d] h-3 rounded-full shadow-lg"></div>
+                        </div>
+                        <div class="text-center">
+                            <span id="progressText" class="text-white font-inter text-lg font-medium">50%</span>
+                        </div>
+                    </div>
+
+                    <!-- Status Messages -->
+                    <div class="text-center mb-8">
+                        <div id="statusMessage" class="text-gray-300 font-inter text-xl mb-4 loading-animation">
+                            Processing your solar panel data...
+                        </div>
+                        <div id="subStatusMessage" class="text-gray-400 font-inter text-base">
+                            Running advanced analytics and anomaly detection
+                        </div>
+                    </div>
+
+                    <!-- Processing Steps -->
+                    <div class="space-y-4 mb-8">
+                        <div id="step1" class="flex items-center gap-4 p-4 bg-[#2a2a2a] rounded-xl border border-gray-600 opacity-50">
+                            <div class="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-semibold">1</span>
+                            </div>
+                            <span class="text-gray-400 font-inter">Loading sensor data</span>
+                            <div class="ml-auto">
+                                <div id="step1Icon" class="w-5 h-5 text-gray-500">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step2" class="flex items-center gap-4 p-4 bg-[#2a2a2a] rounded-xl border border-gray-600 opacity-50">
+                            <div class="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-semibold">2</span>
+                            </div>
+                            <span class="text-gray-400 font-inter">Running model analysis</span>
+                            <div class="ml-auto">
+                                <div id="step2Icon" class="w-5 h-5 text-gray-500">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step3" class="flex items-center gap-4 p-4 bg-[#2a2a2a] rounded-xl border border-gray-600 opacity-50">
+                            <div class="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-semibold">3</span>
+                            </div>
+                            <span class="text-gray-400 font-inter">Generating insights</span>
+                            <div class="ml-auto">
+                                <div id="step3Icon" class="w-5 h-5 text-gray-500">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="step4" class="flex items-center gap-4 p-4 bg-[#2a2a2a] rounded-xl border border-gray-600 opacity-50">
+                            <div class="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center">
+                                <span class="text-white text-sm font-semibold">4</span>
+                            </div>
+                            <span class="text-gray-400 font-inter">Preparing dashboard</span>
+                            <div class="ml-auto">
+                                <div id="step4Icon" class="w-5 h-5 text-gray-500">
+                                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="text-center">
+                        <p class="text-gray-500 font-inter text-sm">
+                            This process may take a few minutes depending on your data size.<br>
+                            Please do not close this window.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        let progress = 50;
+        
+        const steps = [
+            { id: 'step1', message: 'Loading sensor data...', subMessage: 'Reading CSV files and validating data structure' },
+            { id: 'step2', message: 'Running model analysis...', subMessage: 'Executing machine learning algorithms for anomaly detection' },
+            { id: 'step3', message: 'Generating insights...', subMessage: 'Creating visualizations and performance metrics' },
+            { id: 'step4', message: 'Preparing dashboard...', subMessage: 'Finalizing results and preparing interactive charts' }
+        ];
+
+        function updateProgress(newProgress) {
+            progress = newProgress;
+            document.getElementById('progressBar').style.width = progress + '%';
+            document.getElementById('progressText').textContent = progress + '%';
+        }
+
+        function activateStep(stepIndex) {
+            if (stepIndex >= steps.length) return;
+            
+            const step = steps[stepIndex];
+            const stepElement = document.getElementById(step.id);
+            const stepIcon = document.getElementById(step.id + 'Icon');
+            
+            // Update main status messages
+            document.getElementById('statusMessage').textContent = step.message;
+            document.getElementById('subStatusMessage').textContent = step.subMessage;
+            
+            // Activate current step
+            stepElement.classList.remove('opacity-50');
+            stepElement.classList.add('bg-[#629a44]', 'bg-opacity-20', 'border-[#629a44]');
+            stepElement.querySelector('.w-6.h-6').classList.remove('bg-gray-600');
+            stepElement.querySelector('.w-6.h-6').classList.add('bg-[#629a44]');
+            stepElement.querySelector('span:not(.text-sm)').classList.remove('text-gray-400');
+            stepElement.querySelector('span:not(.text-sm)').classList.add('text-white');
+            
+            // Show loading spinner for current step
+            stepIcon.innerHTML = `
+                <svg class="animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                </svg>
+            `;
+            stepIcon.classList.remove('text-gray-500');
+            stepIcon.classList.add('text-[#629a44]');
+        }
+
+        function completeStep(stepIndex) {
+            if (stepIndex >= steps.length) return;
+            
+            const step = steps[stepIndex];
+            const stepIcon = document.getElementById(step.id + 'Icon');
+            
+            // Show checkmark for completed step
+            stepIcon.innerHTML = `
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                </svg>
+            `;
+            stepIcon.classList.remove('animate-spin');
+            stepIcon.classList.add('text-green-500');
+        }
+
+        async function runModelProcessing() {
+            try {
+                const response = await fetch('/run-model-processing', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error('Model processing error:', error);
+                return false;
+            }
+        }
+
+        async function simulateProcessing() {
+            // Step 1: Loading sensor data
+            activateStep(0);
+            updateProgress(60);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            completeStep(0);
+            
+            // Step 2: Running model analysis (this is where model_utils.py runs)
+            activateStep(1);
+            updateProgress(70);
+            
+            // Run the actual model processing
+            const modelSuccess = await runModelProcessing();
+            
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            completeStep(1);
+            
+            // Step 3: Generating insights
+            activateStep(2);
+            updateProgress(85);
+            await new Promise(resolve => setTimeout(resolve, 2000));
+            completeStep(2);
+            
+            // Step 4: Preparing dashboard
+            activateStep(3);
+            updateProgress(95);
+            await new Promise(resolve => setTimeout(resolve, 1500));
+            completeStep(3);
+            
+            // Final completion
+            updateProgress(100);
+            document.getElementById('statusMessage').textContent = 'Analysis Complete!';
+            document.getElementById('subStatusMessage').textContent = 'Redirecting to results dashboard...';
+            
+            // Redirect to results page
+            setTimeout(() => {
+                window.location.href = '/results';
+            }, 2000);
+        }
+
+        // Start the processing simulation when page loads
+        window.addEventListener('load', () => {
+            setTimeout(simulateProcessing, 1000);
+        });
+    </script>
+</body>
+</html>

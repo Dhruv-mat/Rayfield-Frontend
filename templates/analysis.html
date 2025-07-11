@@ -396,10 +396,14 @@
                 if (data.success) {
                     showMessage(`✅ ${data.message}`, 'success');
                     
-                    // Reload page to show updated status
+                    // Show redirect message and redirect to loading page
                     setTimeout(() => {
-                        window.location.reload();
-                    }, 2000);
+                        showMessage('🔄 Redirecting to processing...', 'info');
+                    }, 1500);
+                    
+                    setTimeout(() => {
+                        window.location.href = data.redirect;
+                    }, 2500);
                 } else {
                     showMessage(`❌ ${data.message}`, 'error');
                 }

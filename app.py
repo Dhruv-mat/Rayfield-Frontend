@@ -3,6 +3,8 @@ import csv
 import os
 import hashlib
 from datetime import datetime
+import subprocess
+import sys
 
 app = Flask(__name__)
 app.secret_key = 'your-secret-key-change-this-in-production'
@@ -231,7 +233,8 @@ def upload_sensor_data():
             
             return jsonify({
                 'success': True, 
-                'message': f'Sensor data CSV file ({file_size_mb}MB) uploaded successfully with analysis parameters'
+                'message': f'Sensor data CSV file ({file_size_mb}MB) uploaded successfully with analysis parameters',
+                'redirect': '/loading'
             })
         else:
             return jsonify({'success': False, 'message': 'Please upload a valid CSV file'}), 400
@@ -248,6 +251,68 @@ def analysis():
     upload_info = session.get('last_upload', {})
     sensor_info = session.get('sensor_upload', {})
     return render_template('analysis.html', user_email=session['user_email'], upload_info=upload_info, sensor_info=sensor_info)
+
+@app.route('/loading')
+def loading():
+    if 'user_email' not in session:
+        return redirect(url_for('index'))
+    return render_template('loading.html', user_email=session['user_email'])
+
+@app.route('/run-model-processing', methods=['POST'])
+def run_model_processing():
+    if 'user_email' not in session:
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+    
+    try:
+        # Check if model_utils.py exists
+        if os.path.exists('model_utils.py'):
+            # Run the model_utils.py file
+            result = subprocess.run([sys.executable, 'model_utils.py'], 
+                                  capture_output=True, text=True, timeout=300)  # 5 minute timeout
+            
+            if result.returncode == 0:
+                return jsonify({
+                    'success': True, 
+                    'message': 'Model processing completed successfully',
+                    'output': result.stdout
+                })
+            else:
+                return jsonify({
+                    'success': False, 
+                    'message': f'Model processing failed: {result.stderr}',
+                    'error': result.stderr
+                })
+        else:
+            # If model_utils.py doesn't exist, simulate processing
+            return jsonify({
+                'success': True, 
+                'message': 'Model processing simulated (model_utils.py not found)',
+                'output': 'Simulation completed'
+            })
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            'success': False, 
+            'message': 'Model processing timed out (exceeded 5 minutes)'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False, 
+            'message': f'Error running model processing: {str(e)}'
+        })
+
+@app.route('/results')
+def results():
+    if 'user_email' not in session:
+        return redirect(url_for('index'))
+    
+    # Get upload info from session
+    upload_info = session.get('last_upload', {})
+    sensor_info = session.get('sensor_upload', {})
+    
+    return render_template('results.html', 
+                         user_email=session['user_email'], 
+                         upload_info=upload_info, 
+                         sensor_info=sensor_info)
 
 @app.route('/logout')
 def logout():

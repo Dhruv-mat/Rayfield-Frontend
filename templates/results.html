@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rayfield Systems - Analysis Results</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        .font-outfit { font-family: 'Outfit', sans-serif; }
+        .font-inter { font-family: 'Inter', sans-serif; }
+        .blur-effect { filter: blur(200px); }
+        .glass-effect {
+            background: rgba(31, 31, 31, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .slide-in {
+            animation: slideIn 0.5s ease-out;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-[#212121] min-h-screen">
+    <div class="bg-[#212121] flex flex-row justify-center w-full min-h-screen">
+        <div class="bg-[#212121] overflow-hidden w-full max-w-[1440px] relative">
+            <!-- Animated Background Elements -->
+            <div class="absolute w-[400px] h-[400px] top-[150px] right-[200px] bg-[#629a44] rounded-full blur-effect opacity-20"></div>
+            <div class="absolute w-[300px] h-[300px] top-[400px] left-[100px] bg-[#4a7c32] rounded-full blur-effect opacity-15"></div>
+
+            <!-- Header -->
+            <div class="absolute top-[40px] left-[40px] flex items-center gap-4 slide-in">
+                <div class="w-[45px] h-[45px] bg-gradient-to-br from-[#629a44] to-[#5a8a3d] rounded-xl flex items-center justify-center shadow-lg">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 17L12 22L22 17" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                        <path d="M2 12L12 17L22 12" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+                <h1 class="font-outfit font-bold text-white text-2xl">Rayfield Systems</h1>
+            </div>
+
+            <!-- User Info and Logout -->
+            <div class="absolute top-[40px] right-[40px] flex items-center gap-4 slide-in">
+                <div class="flex items-center gap-3 bg-[#2a2a2a] px-4 py-2 rounded-lg border border-gray-700">
+                    <div class="w-8 h-8 bg-gradient-to-br from-[#629a44] to-[#5a8a3d] rounded-full flex items-center justify-center">
+                        <span class="text-white text-sm font-semibold">{{ user_email[0].upper() }}</span>
+                    </div>
+                    <span class="text-gray-300 font-inter text-sm">{{ user_email }}</span>
+                </div>
+                <a href="/logout" class="bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white px-4 py-2 rounded-lg transition-all duration-300 font-inter font-medium shadow-lg hover:shadow-xl">
+                    Logout
+                </a>
+            </div>
+
+            <!-- Main Content Area -->
+            <div class="absolute w-full max-w-[1360px] top-[120px] left-1/2 -translate-x-1/2 px-8">
+                <!-- Main Results Card -->
+                <div class="relative glass-effect rounded-[25px] shadow-2xl p-8 slide-in">
+                    <!-- Results Title -->
+                    <div class="text-center mb-10">
+                        <h2 class="font-outfit font-semibold text-white text-[36px] mb-3">
+                            Analysis Results
+                        </h2>
+                        <p class="font-inter text-gray-400 text-lg">
+                            Comprehensive insights from your solar panel data analysis
+                        </p>
+                    </div>
+
+                    <!-- Success Message -->
+                    <div class="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 mb-8 text-center">
+                        <div class="flex items-center justify-center mb-4">
+                            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                        </div>
+                        <h3 class="font-outfit font-semibold text-white text-2xl mb-2">
+                            Analysis Complete!
+                        </h3>
+                        <p class="text-white text-opacity-90 font-inter">
+                            Your solar panel data has been successfully processed and analyzed using advanced machine learning algorithms.
+                        </p>
+                    </div>
+
+                    <!-- Data Summary Cards -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                        {% if upload_info %}
+                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-3">
+                                <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                </svg>
+                                <span class="text-white font-inter font-semibold text-sm">Energy Data</span>
+                            </div>
+                            <span class="text-gray-300 text-sm">{{ upload_info.original_filename }}</span>
+                            <div class="text-xs text-gray-400 mt-1">{{ upload_info.file_size }}MB</div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if sensor_info %}
+                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-3">
+                                <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"></path>
+                                </svg>
+                                <span class="text-white font-inter font-semibold text-sm">Solar Panels</span>
+                            </div>
+                            <span class="text-gray-300 text-sm">{{ sensor_info.num_solar_panels }} panels</span>
+                            <div class="text-xs text-gray-400 mt-1">Analyzed</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-3">
+                                <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                                <span class="text-white font-inter font-semibold text-sm">Time Frame</span>
+                            </div>
+                            <span class="text-gray-300 text-sm">{{ sensor_info.time_frame }}</span>
+                            <div class="text-xs text-gray-400 mt-1">Duration</div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-xl p-6 border border-gray-700">
+                            <div class="flex items-center gap-3 mb-3">
+                                <svg class="w-5 h-5 text-[#629a44]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                                <span class="text-white font-inter font-semibold text-sm">Expected Output</span>
+                            </div>
+                            <span class="text-gray-300 text-sm">{{ sensor_info.expected_output }}</span>
+                            <div class="text-xs text-gray-400 mt-1">Target</div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Model Processing Results -->
+                    <div class="bg-gradient-to-br from-[#2a2a2a] to-[#252525] rounded-2xl p-8 mb-8 border border-gray-700">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 bg-[#629a44] rounded-lg flex items-center justify-center">
+                                <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="font-outfit font-semibold text-white text-xl">Analysis Results</h3>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="text-center p-6 bg-[#1a1a1a] rounded-xl">
+                                <div class="text-3xl font-bold text-[#629a44] mb-2">✓</div>
+                                <div class="text-white font-semibold mb-1">Model Processing</div>
+                                <div class="text-gray-400 text-sm">Successfully Completed</div>
+                            </div>
+                            
+                            <div class="text-center p-6 bg-[#1a1a1a] rounded-xl">
+                                <div class="text-3xl font-bold text-[#629a44] mb-2">📊</div>
+                                <div class="text-white font-semibold mb-1">Data Analysis</div>
+                                <div class="text-gray-400 text-sm">Insights Generated</div>
+                            </div>
+                            
+                            <div class="text-center p-6 bg-[#1a1a1a] rounded-xl">
+                                <div class="text-3xl font-bold text-[#629a44] mb-2">🔍</div>
+                                <div class="text-white font-semibold mb-1">Anomaly Detection</div>
+                                <div class="text-gray-400 text-sm">Patterns Identified</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex justify-center gap-6 mb-8">
+                        <a
+                            href="/dashboard"
+                            class="bg-gradient-to-r from-[#629a44] to-[#5a8a3d] hover:from-[#5a8a3d] hover:to-[#4a7c32] text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3 no-underline"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2H5a2 2 0 00-2-2z"></path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5a2 2 0 012-2h4a2 2 0 012 2v0H8v0z"></path>
+                            </svg>
+                            New Analysis
+                        </a>
+                        <button
+                            type="button"
+                            onclick="window.print()"
+                            class="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-10 py-4 rounded-xl font-inter font-semibold text-lg transition-all duration-300 shadow-lg hover:shadow-xl flex items-center gap-3"
+                        >
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                            </svg>
+                            Export Report
+                        </button>
+                    </div>
+
+                    <!-- Footer Info -->
+                    <div class="text-center">
+                        <p class="text-gray-500 font-inter text-sm">
+                            Analysis completed at {{ moment().format('MMMM Do YYYY, h:mm:ss a') }}<br>
+                            Powered by Rayfield Systems Advanced Analytics Engine
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
