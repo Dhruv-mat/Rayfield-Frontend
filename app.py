@@ -7,7 +7,7 @@ from datetime import datetime
 import subprocess
 import sys
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='public', static_url_path='/public')
 app.secret_key = 'your-secret-key-change-this-in-production'
 
 # Configure Flask for large file uploads
