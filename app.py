@@ -368,6 +368,80 @@ def run_model_processing():
             'message': f'Error running model processing: {str(e)}'
         })
 
+@app.route('/comparison')
+def comparison():
+    if 'user_email' not in session:
+        return redirect(url_for('index'))
+    
+    def parse_gemini_summary(file_path):
+        """Parse gemini summary file and extract sections"""
+        sections = {
+            'short_summary': '',
+            'overview': '',
+            'cause_analysis': '',
+            'recommendations': '',
+            'detailed_summary': '',
+            'metrics': {}
+        }
+        
+        try:
+            with open(file_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+        except FileNotFoundError:
+            return sections
+        
+        if content and content != "Summary not available. Please run the analysis first.":
+            lines = content.split('\n')
+            current_section = None
+            
+            for line in lines:
+                line = line.strip()
+                if '🔹 Short Summary' in line:
+                    current_section = 'short_summary'
+                elif '🔹 Overview' in line:
+                    current_section = 'overview'
+                elif '🔹 Cause Analysis' in line:
+                    current_section = 'cause_analysis'
+                elif '🔹 Recommendations' in line:
+                    current_section = 'recommendations'
+                elif '🔹 Detailed Summary' in line:
+                    current_section = 'detailed_summary'
+                elif '🔹 Values' in line:
+                    current_section = 'metrics'
+                elif current_section and line and not line.startswith('**'):
+                    if current_section == 'metrics':
+                        # Parse values section
+                        if ':' in line and line.startswith('*'):
+                            # Remove asterisks and parse key-value pairs
+                            clean_line = line.replace('*', '').strip()
+                            if ':' in clean_line:
+                                key, value = clean_line.split(':', 1)
+                                sections['metrics'][key.strip()] = value.strip()
+                    else:
+                        if sections[current_section]:
+                            sections[current_section] += '\n' + line
+                        else:
+                            sections[current_section] = line
+        
+        return sections
+    
+    # Parse both gemini summary files
+    main_sections = parse_gemini_summary('gemini_summary.txt')
+    site2_sections = parse_gemini_summary('Site2/gemini_summary.txt')
+    
+    return render_template('comparison.html', 
+                         user_email=session['user_email'],
+                         main_sections=main_sections,
+                         site2_sections=site2_sections)
+
+@app.route('/site2-anomaly-image')
+def serve_site2_anomaly_image():
+    return send_from_directory('Site2', 'anomaly_analysis_results.png')
+
+@app.route('/site2-regression-image')
+def serve_site2_regression_image():
+    return send_from_directory('Site2', 'regression_model_visualization.png')
+
 @app.route('/anomaly_analysis_results.png')
 def serve_anomaly_image():
     return send_from_directory('.', 'anomaly_analysis_results.png')
