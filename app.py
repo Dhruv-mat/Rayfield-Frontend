@@ -283,7 +283,7 @@ def summary():
         'cause_analysis': '',
         'recommendations': '',
         'detailed_summary': '',
-        'values': {}
+        'metrics': {}
     }
     
     if summary_content and summary_content != "Summary not available. Please run the analysis first.":
@@ -303,16 +303,16 @@ def summary():
             elif '🔹 Detailed Summary' in line:
                 current_section = 'detailed_summary'
             elif '🔹 Values' in line:
-                current_section = 'values'
+                current_section = 'metrics'
             elif current_section and line and not line.startswith('**'):
-                if current_section == 'values':
+                if current_section == 'metrics':
                     # Parse values section
                     if ':' in line and line.startswith('*'):
                         # Remove asterisks and parse key-value pairs
                         clean_line = line.replace('*', '').strip()
                         if ':' in clean_line:
                             key, value = clean_line.split(':', 1)
-                            sections['values'][key.strip()] = value.strip()
+                            sections['metrics'][key.strip()] = value.strip()
                 else:
                     if sections[current_section]:
                         sections[current_section] += '\n' + line

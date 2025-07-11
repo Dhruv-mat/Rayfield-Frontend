@@ -289,8 +289,8 @@
                                 <h3 class="font-outfit font-semibold text-white text-2xl mb-6 text-[#629a44]">Values</h3>
                                 <div class="values-list">
                                     <ul class="space-y-2 text-sm font-inter">
-                                        {% if sections.values %}
-                                            {% for key, value in sections.values.items() %}
+                                        {% if sections.metrics %}
+                                            {% for key, value in sections.metrics.items() %}
                                             <li class="flex justify-between">
                                                 <span class="text-gray-400">{{ key }}:</span>
                                                 <span class="text-white">{{ value }}</span>
