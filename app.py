@@ -116,8 +116,9 @@ def upload_data():
             if file_size > 400 * 1024 * 1024:  # 400MB limit
                 return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
             
-            # Save uploaded file
-            filename = file.filename  # Save with exact original filename
+            # Save uploaded file with standardized name for dashboard
+            original_filename = file.filename
+            filename = 'Synthetic_Generation_Data.csv'  # Always rename to this for dashboard uploads
             file_path = os.path.join(UPLOADS_FOLDER, filename)
             
             # Save file in chunks for large files
@@ -127,12 +128,12 @@ def upload_data():
                 return jsonify({'success': False, 'message': f'Error saving file: {str(e)}'}), 500
             
             # Save parameters
-            save_upload_parameters(session['user_email'], filename, location, unit, source_type)
+            save_upload_parameters(session['user_email'], original_filename, location, unit, source_type)
             
             # Store upload info in session for analysis page
             session['last_upload'] = {
                 'filename': filename,
-                'original_filename': file.filename,
+                'original_filename': original_filename,
                 'location': location,
                 'unit': unit,
                 'source_type': source_type,
@@ -208,8 +209,9 @@ def upload_sensor_data():
             if file_size > 400 * 1024 * 1024:  # 400MB limit
                 return jsonify({'success': False, 'message': 'File too large. Maximum size is 400MB'}), 400
             
-            # Save uploaded file
-            filename = file.filename  # Save with exact original filename
+            # Save uploaded file with standardized name for analysis
+            original_filename = file.filename
+            filename = 'Synthetic_Weather_Data.csv'  # Always rename to this for analysis uploads
             file_path = os.path.join(UPLOADS_FOLDER, filename)
             
             # Save file
@@ -219,12 +221,12 @@ def upload_sensor_data():
                 return jsonify({'success': False, 'message': f'Error saving file: {str(e)}'}), 500
             
             # Save analysis parameters
-            save_analysis_parameters(session['user_email'], filename, num_solar_panels, anomaly_threshold, time_frame, expected_output)
+            save_analysis_parameters(session['user_email'], original_filename, num_solar_panels, anomaly_threshold, time_frame, expected_output)
             
             # Update session with sensor data info
             session['sensor_upload'] = {
                 'filename': filename,
-                'original_filename': file.filename,
+                'original_filename': original_filename,
                 'num_solar_panels': num_solar_panels,
                 'anomaly_threshold': anomaly_threshold,
                 'time_frame': time_frame,
