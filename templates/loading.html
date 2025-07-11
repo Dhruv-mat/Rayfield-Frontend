@@ -248,6 +248,22 @@
             }
         }
 
+        async function runEngineProcessing() {
+            try {
+                const response = await fetch('/run-engine-processing', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                });
+                
+                const data = await response.json();
+                return data.success;
+            } catch (error) {
+                console.error('Engine processing error:', error);
+                return false;
+            }
+        }
         async function simulateProcessing() {
             // Step 1: Loading sensor data
             activateStep(0);
@@ -265,9 +281,13 @@
             await new Promise(resolve => setTimeout(resolve, 3000));
             completeStep(1);
             
-            // Step 3: Generating insights
+            // Step 3: Generating insights (this is where engine.py runs)
             activateStep(2);
             updateProgress(85);
+            
+            // Run the actual engine processing
+            const engineSuccess = await runEngineProcessing();
+            
             await new Promise(resolve => setTimeout(resolve, 2000));
             completeStep(2);
             

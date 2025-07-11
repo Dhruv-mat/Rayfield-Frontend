@@ -304,6 +304,48 @@ def run_model_processing():
             'message': f'Error running model processing: {str(e)}'
         })
 
+@app.route('/run-engine-processing', methods=['POST'])
+def run_engine_processing():
+    if 'user_email' not in session:
+        return jsonify({'success': False, 'message': 'Not authenticated'}), 401
+    
+    try:
+        # Check if engine.py exists in summary_engine folder
+        engine_path = os.path.join('summary_engine', 'engine.py')
+        if os.path.exists(engine_path):
+            # Run the engine.py file
+            result = subprocess.run([sys.executable, engine_path], 
+                                  capture_output=True, text=True, timeout=300)  # 5 minute timeout
+            
+            if result.returncode == 0:
+                return jsonify({
+                    'success': True, 
+                    'message': 'Engine processing completed successfully',
+                    'output': result.stdout
+                })
+            else:
+                return jsonify({
+                    'success': False, 
+                    'message': f'Engine processing failed: {result.stderr}',
+                    'error': result.stderr
+                })
+        else:
+            # If engine.py doesn't exist, simulate processing
+            return jsonify({
+                'success': True, 
+                'message': 'Engine processing simulated (engine.py not found)',
+                'output': 'Simulation completed'
+            })
+    except subprocess.TimeoutExpired:
+        return jsonify({
+            'success': False, 
+            'message': 'Engine processing timed out (exceeded 5 minutes)'
+        })
+    except Exception as e:
+        return jsonify({
+            'success': False, 
+            'message': f'Error running engine processing: {str(e)}'
+        })
 @app.route('/logout')
 def logout():
     session.pop('user_email', None)
