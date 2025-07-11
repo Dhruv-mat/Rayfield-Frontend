@@ -26,6 +26,7 @@ Given the following content, generate a comprehensive structured report with the
 3. 🔹 Cause Analysis: Break down the reasons, factors, or causes behind key points or events.
 4. 🔹 Recommendations: Actionable suggestions or next steps based on the content.
 5. 🔹 Detailed Summary: A deeper dive summarizing all the important information in a logical flow.
+6. 🔹 Values: giuve the values such as perfromance ratio(estimate it), capacity factor, total yield, no. of anomalies detected, downtime(night time or clowdy weather), system health(good,bad) (no long sentences only values)
 
 Here is the content the generation data along witht he weather data:
 ---
@@ -34,6 +35,7 @@ Here is the content the generation data along witht he weather data:
 ---
 
 Focus on real metrics
+
 
 Avoid vague fluff like "could be due to"
 

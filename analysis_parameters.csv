@@ -2,3 +2,5 @@ user_email,timestamp,sensor_filename,num_solar_panels,anomaly_threshold,time_fra
 admin@rayfield.com,2025-07-11T09:45:28.203187,Synthetic_Weather_Data.csv,45,32,3 months,898
 admin@rayfield.com,2025-07-11T11:05:58.778047,Synthetic_Weather_Data.csv,45,32,3 months,898
 admin@rayfield.com,2025-07-11T11:45:17.800412,Synthetic_Weather_Data.csv,1,32,3 months,898
+admin@rayfield.com,2025-07-11T12:09:33.656809,Synthetic_Generation_Data.csv,1,32,3 months,898
+admin@rayfield.com,2025-07-11T12:14:59.219776,Synthetic_Weather_Data.csv,45,32,3 months,898
