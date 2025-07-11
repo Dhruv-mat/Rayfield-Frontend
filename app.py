@@ -282,7 +282,8 @@ def summary():
         'overview': '',
         'cause_analysis': '',
         'recommendations': '',
-        'detailed_summary': ''
+        'detailed_summary': '',
+        'values': {}
     }
     
     if summary_content and summary_content != "Summary not available. Please run the analysis first.":
@@ -301,11 +302,22 @@ def summary():
                 current_section = 'recommendations'
             elif '🔹 Detailed Summary' in line:
                 current_section = 'detailed_summary'
+            elif '🔹 Values' in line:
+                current_section = 'values'
             elif current_section and line and not line.startswith('**'):
-                if sections[current_section]:
-                    sections[current_section] += '\n' + line
+                if current_section == 'values':
+                    # Parse values section
+                    if ':' in line and line.startswith('*'):
+                        # Remove asterisks and parse key-value pairs
+                        clean_line = line.replace('*', '').strip()
+                        if ':' in clean_line:
+                            key, value = clean_line.split(':', 1)
+                            sections['values'][key.strip()] = value.strip()
                 else:
-                    sections[current_section] = line
+                    if sections[current_section]:
+                        sections[current_section] += '\n' + line
+                    else:
+                        sections[current_section] = line
     
     return render_template('summary.html', 
                          user_email=session['user_email'], 
