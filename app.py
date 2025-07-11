@@ -44,15 +44,21 @@ def init_csv():
 def verify_user(email, password):
     """Verify user credentials against CSV file"""
     if not os.path.exists(CSV_FILE):
+        print(f"CSV file {CSV_FILE} does not exist")
         return False
     
     password_hash = hash_password(password)
+    print(f"Attempting login for email: {email}")
+    print(f"Password hash: {password_hash}")
     
     with open(CSV_FILE, 'r', newline='') as file:
         reader = csv.DictReader(file)
         for row in reader:
+            print(f"Checking row: email={row['email']}, stored_hash={row['password_hash']}")
             if row['email'] == email and row['password_hash'] == password_hash:
+                print("Login successful!")
                 return True
+    print("Login failed - no matching credentials found")
     return False
 
 def save_upload_parameters(user_email, filename, location, unit, source_type):
