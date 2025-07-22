@@ -47,7 +47,7 @@ Structure your output clearly with section headers. Be clear, concise, and infor
 Avoid repeating yourself. Be technical, precise, and practical.
 """
 
-genai.configure(api_key= "AIzaSyAhy9yNA3B2_nb2D81QSkJbh7fto6m2esQ")
+genai.configure(api_key= "insert your api key here")
 
 
 model = genai.GenerativeModel("gemini-1.5-flash")
